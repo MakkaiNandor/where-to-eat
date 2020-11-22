@@ -2,5 +2,9 @@
     <string name="app_name">Android Project</string>
     <string name="img_desc">Restaurant image</string>
     <string name="fav_desc">Favorite button</string>
+    <string name="rest_name">Name</string>
+    <string name="rest_address">Address</string>
+    <string name="rest_price">Price</string>
+    <string name="list_fragment_title">List of restaurants</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
