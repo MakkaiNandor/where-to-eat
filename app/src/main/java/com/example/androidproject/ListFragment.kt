@@ -35,10 +35,10 @@ class ListFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_list, container, false)
-        val recyclerView = root.findViewById<RecyclerView>(R.id.rest_list)
-        recyclerView.adapter = RestaurantAdapter(this.context!!, MainActivity.itemList)
-        recyclerView.layoutManager = LinearLayoutManager(this.context)
-        recyclerView.setHasFixedSize(true)
+//        val recyclerView = root.findViewById<RecyclerView>(R.id.rest_list)
+//        recyclerView.adapter = RestaurantAdapter(this.context!!, MainActivity.itemList)
+//        recyclerView.layoutManager = LinearLayoutManager(this.context)
+//        recyclerView.setHasFixedSize(true)
         return root
     }
 
