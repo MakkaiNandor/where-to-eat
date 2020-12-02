@@ -1,12 +1,18 @@
 package com.example.androidproject
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.androidproject.RetrofitInstance.api
+import com.example.androidproject.model.Restaurants
+import retrofit2.Call
+import retrofit2.Response
+import javax.security.auth.callback.Callback
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,10 +41,24 @@ class ListFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_list, container, false)
-//        val recyclerView = root.findViewById<RecyclerView>(R.id.rest_list)
-//        recyclerView.adapter = RestaurantAdapter(this.context!!, MainActivity.itemList)
-//        recyclerView.layoutManager = LinearLayoutManager(this.context)
-//        recyclerView.setHasFixedSize(true)
+        val recyclerView = root.findViewById<RecyclerView>(R.id.rest_list)
+        recyclerView.adapter = RestaurantAdapter(this.context!!, listOf())
+        recyclerView.layoutManager = LinearLayoutManager(this.context)
+        recyclerView.setHasFixedSize(true)
+
+        api.getRestaurants(mapOf("city" to "Chicago")).enqueue(object: retrofit2.Callback<Restaurants> {
+            override fun onResponse(call: Call<Restaurants>, response: Response<Restaurants>) {
+                Log.d("Response", "onResponse")
+                Log.d("Response", "Restaurants: ${response.body()!!.total_entries}")
+                recyclerView.adapter = RestaurantAdapter(requireContext(), response.body()!!.restaurants)
+            }
+
+            override fun onFailure(call: Call<Restaurants>, t: Throwable) {
+                Log.d("Response", "onFailure")
+                Log.d("Response", "Error: ${t.message}")
+                Log.d("Response", "Error: $t")
+            }
+        })
         return root
     }
 

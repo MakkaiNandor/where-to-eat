@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.androidproject.model.Restaurant
 
-class RestaurantAdapter(private val context: Context, private val list: List<Restaurant>) : RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
+class RestaurantAdapter(private val context: Context, private var list: List<Restaurant>) : RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
     class RestaurantViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val restImageView: ImageView = itemView.findViewById(R.id.rest_img)
         val nameTextView: TextView = itemView.findViewById(R.id.rest_name)
@@ -35,5 +35,9 @@ class RestaurantAdapter(private val context: Context, private val list: List<Res
     }
 
     override fun getItemCount(): Int = list.size
+
+    fun setList(list: List<Restaurant>){
+        this.list = list
+    }
 
 }
