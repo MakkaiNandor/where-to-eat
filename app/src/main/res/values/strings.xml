@@ -6,5 +6,17 @@
     <string name="rest_address">Address</string>
     <string name="rest_price">Price</string>
     <string name="list_fragment_title">List of restaurants</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="filter_fragment_title">Filters</string>
+    <string name="listed_data_text">Data to list</string>
+    <string name="listed_data_all">All</string>
+    <string name="listed_data_favorites">Only favorites</string>
+    <string name="listed_data_without_favorites">Without favorites</string>
+    <string name="city_text">City</string>
+    <string name="price_text">Price</string>
+    <string name="price_all">All</string>
+    <string name="price_1">1</string>
+    <string name="price_2">2</string>
+    <string name="price_3">3</string>
+    <string name="price_4">4</string>
+    <string name="save_button_text">Save</string>
 </resources>

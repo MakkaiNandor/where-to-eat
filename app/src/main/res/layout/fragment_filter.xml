@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FilterFragment">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/filter_fragment_title"
+        android:layout_marginVertical="20dp"
+        android:textColor="@color/purple_500"
+        android:textSize="24sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/listed_data"
+        app:layout_constraintVertical_bias="0.0"/>
+
+    <TextView
+        android:id="@+id/listed_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/listed_data_text"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/listed_data_radio_group"
+        app:layout_constraintHorizontal_bias="0.1"/>
+
+    <RadioGroup
+        android:id="@+id/listed_data_radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/listed_data"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/hr_2"
+        app:layout_constraintHorizontal_bias="0.2">
+
+        <RadioButton
+            android:id="@+id/listed_data_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/listed_data_all"/>
+
+        <RadioButton
+            android:id="@+id/listed_data_favorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/listed_data_favorites"/>
+
+        <RadioButton
+            android:id="@+id/listed_data_without_favorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/listed_data_without_favorites"/>
+
+    </RadioGroup>
+
+    <View
+        android:id="@+id/hr_2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/listed_data_radio_group"
+        app:layout_constraintBottom_toTopOf="@id/city"/>
+
+    <TextView
+        android:id="@+id/city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/city_text"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/hr_2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/hr_3"
+        app:layout_constraintHorizontal_bias="0.1"/>
+
+    <View
+        android:id="@+id/hr_3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/city"
+        app:layout_constraintBottom_toTopOf="@id/price"/>
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/price_text"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/hr_3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/price_radio_group"
+        app:layout_constraintHorizontal_bias="0.1"/>
+
+    <RadioGroup
+        android:id="@+id/price_radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/price"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/save_button">
+
+        <RadioButton
+            android:id="@+id/price_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/price_all"
+            android:layout_marginHorizontal="10dp"/>
+
+        <RadioButton
+            android:id="@+id/price_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/price_1"
+            android:layout_marginHorizontal="10dp"/>
+
+        <RadioButton
+            android:id="@+id/price_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/price_2"
+            android:layout_marginHorizontal="10dp"/>
+
+        <RadioButton
+            android:id="@+id/price_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/price_3"
+            android:layout_marginHorizontal="10dp"/>
+
+        <RadioButton
+            android:id="@+id/price_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/price_4"
+            android:layout_marginHorizontal="10dp"/>
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_button_text"
+        app:layout_constraintTop_toBottomOf="@+id/price_radio_group"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
