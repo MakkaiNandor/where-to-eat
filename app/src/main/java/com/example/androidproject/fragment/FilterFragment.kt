@@ -1,4 +1,4 @@
-package com.example.androidproject.fragments
+package com.example.androidproject.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -10,8 +10,8 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import com.example.androidproject.R
-import com.example.androidproject.RetrofitInstance.api
-import com.example.androidproject.models.Cities
+import com.example.androidproject.retrofit.RetrofitInstance.api
+import com.example.androidproject.model.Cities
 import retrofit2.Call
 import retrofit2.Response
 
@@ -41,8 +41,10 @@ class FilterFragment : Fragment() {
                 if(response.isSuccessful) {
                     Log.d("Response", "onResponse")
                     Log.d("Response", "Cities: ${response.body()!!.count}")
-                    citySpinner.adapter = ArrayAdapter<String>(requireContext(),
-                        R.layout.support_simple_spinner_dropdown_item, response.body()!!.cities)
+                    citySpinner.adapter = ArrayAdapter<String>(
+                        requireContext(),
+                        R.layout.support_simple_spinner_dropdown_item,
+                        response.body()!!.cities)
                 }
                 else{
                     Log.d("Response", "Failed: ${response.code()}, ${response.message()}")

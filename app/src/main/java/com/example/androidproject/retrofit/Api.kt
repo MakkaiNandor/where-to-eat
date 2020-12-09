@@ -1,6 +1,6 @@
-package com.example.androidproject
+package com.example.androidproject.retrofit
 
-import com.example.androidproject.models.*
+import com.example.androidproject.model.*
 import retrofit2.Call
 import retrofit2.http.*
 

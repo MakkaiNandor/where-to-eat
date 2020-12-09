@@ -1,4 +1,4 @@
-package com.example.androidproject.fragments
+package com.example.androidproject.fragment
 
 import android.os.Bundle
 import android.view.*
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidproject.R
 import com.example.androidproject.RestaurantAdapter
-import com.example.androidproject.activities.MainActivity
+import com.example.androidproject.activity.MainActivity
 
 /**
  * A simple [Fragment] subclass.

@@ -1,4 +1,4 @@
-package com.example.androidproject.models
+package com.example.androidproject.model
 
 data class Countries(
     val count: Int,

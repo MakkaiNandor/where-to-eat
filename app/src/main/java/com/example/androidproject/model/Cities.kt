@@ -1,4 +1,4 @@
-package com.example.androidproject.models
+package com.example.androidproject.model
 
 data class Cities(
     val count: Int,
