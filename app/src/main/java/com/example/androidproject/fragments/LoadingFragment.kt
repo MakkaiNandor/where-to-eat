@@ -1,4 +1,4 @@
-package com.example.androidproject
+package com.example.androidproject.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -6,40 +6,41 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import android.widget.TextView
+import com.example.androidproject.R
 import com.example.androidproject.RetrofitInstance.api
-import com.example.androidproject.model.Restaurants
+import com.example.androidproject.activities.MainActivity
+import com.example.androidproject.models.Restaurants
 import retrofit2.Call
 import retrofit2.Response
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ListFragment.newInstance] factory method to
+ * Use the [LoadingFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ListFragment : Fragment() {
+class LoadingFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val root = inflater.inflate(R.layout.fragment_list, container, false)
+        val root = inflater.inflate(R.layout.fragment_loading, container, false)
 
-        val recyclerView = root.findViewById<RecyclerView>(R.id.rest_list)
-        recyclerView.adapter = RestaurantAdapter(this.context!!, listOf())
-        recyclerView.layoutManager = LinearLayoutManager(this.context)
-        recyclerView.setHasFixedSize(true)
-
-        val filters = if (MainActivity.searchFilters.isEmpty()) MainActivity.baseSearchFilter else MainActivity.searchFilters
-        api.getRestaurants(filters).enqueue(object: retrofit2.Callback<Restaurants> {
+        api.getRestaurants(MainActivity.filters).enqueue(object : retrofit2.Callback<Restaurants>{
             override fun onResponse(call: Call<Restaurants>, response: Response<Restaurants>) {
                 if(response.isSuccessful) {
                     Log.d("Response", "onResponse")
-                    Log.d("Response", "Restaurants: ${response.body()!!.total_entries}")
-                    recyclerView.adapter = RestaurantAdapter(requireContext(), response.body()!!.restaurants)
+                    Log.d("Response", "Cities: ${response.body()!!.total_entries}")
+                    MainActivity.restaurants = response.body()!!.restaurants
+                    fragmentManager?.beginTransaction()?.replace(
+                        R.id.fragment_container,
+                        ListFragment.newInstance()
+                    )?.commit()
                 }
                 else{
                     Log.d("Response", "Failed: ${response.code()}, ${response.message()}")
+                    val errorMsg = "Error ${response.code()}: ${response.message()}"
+                    root.findViewById<TextView>(R.id.error).text = errorMsg
                 }
             }
 
@@ -47,8 +48,10 @@ class ListFragment : Fragment() {
                 Log.d("Response", "onFailure")
                 Log.d("Response", "Error: ${t.message}")
                 Log.d("Response", "Error: $t")
+                root.findViewById<TextView>(R.id.error).text = "${t.message}"
             }
         })
+
         return root
     }
 
@@ -57,9 +60,9 @@ class ListFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @return A new instance of fragment ListFragment.
+         * @return A new instance of fragment LoadingFragment.
          */
         @JvmStatic
-        fun newInstance() = ListFragment()
+        fun newInstance() = LoadingFragment()
     }
 }

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FilterFragment">
+    tools:context=".fragments.FilterFragment">
 
     <TextView
         android:id="@+id/title"
@@ -18,8 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/listed_data"
-        app:layout_constraintVertical_bias="0.0"/>
+        app:layout_constraintBottom_toTopOf="@+id/listed_data"/>
 
     <TextView
         android:id="@+id/listed_data"
@@ -41,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@id/listed_data"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/hr_2"
+        app:layout_constraintBottom_toTopOf="@id/hr_1"
         app:layout_constraintHorizontal_bias="0.2">
 
         <RadioButton
@@ -65,12 +64,14 @@
     </RadioGroup>
 
     <View
-        android:id="@+id/hr_2"
+        android:id="@+id/hr_1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/black"
+        android:layout_marginHorizontal="20dp"
+        android:background="@android:color/darker_gray"
         app:layout_constraintTop_toBottomOf="@id/listed_data_radio_group"
         app:layout_constraintBottom_toTopOf="@id/city"/>
+
 
     <TextView
         android:id="@+id/city"
@@ -78,18 +79,29 @@
         android:layout_height="wrap_content"
         android:text="@string/city_text"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/hr_2"
+        app:layout_constraintTop_toBottomOf="@id/hr_1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/hr_3"
+        app:layout_constraintBottom_toTopOf="@id/city_spinner"
         app:layout_constraintHorizontal_bias="0.1"/>
 
+    <Spinner
+        android:id="@+id/city_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/city"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/hr_2"
+        app:layout_constraintHorizontal_bias="0.2"/>
+
     <View
-        android:id="@+id/hr_3"
+        android:id="@+id/hr_2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/black"
-        app:layout_constraintTop_toBottomOf="@id/city"
+        android:layout_marginHorizontal="20dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/city_spinner"
         app:layout_constraintBottom_toTopOf="@id/price"/>
 
     <TextView
@@ -98,7 +110,7 @@
         android:layout_height="wrap_content"
         android:text="@string/price_text"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/hr_3"
+        app:layout_constraintTop_toBottomOf="@id/hr_2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/price_radio_group"

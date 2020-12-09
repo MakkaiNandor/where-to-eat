@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.androidproject.model.Restaurant
+import com.example.androidproject.models.Restaurant
 
 class RestaurantAdapter(private val context: Context, private var list: List<Restaurant>) : RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
     class RestaurantViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -38,6 +38,12 @@ class RestaurantAdapter(private val context: Context, private var list: List<Res
 
     fun setList(list: List<Restaurant>){
         this.list = list
+        notifyDataSetChanged()
+    }
+
+    fun addData(newList: List<Restaurant>){
+        this.list += newList
+        notifyDataSetChanged()
     }
 
 }

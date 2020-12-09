@@ -1,7 +1,6 @@
 package com.example.androidproject
 
-import com.example.androidproject.model.Restaurant
-import com.example.androidproject.model.Restaurants
+import com.example.androidproject.models.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -12,4 +11,10 @@ interface Api {
 
     @GET("/api/restaurants")
     fun getRestaurants(@QueryMap params: Map<String, String>): Call<Restaurants>
+
+    @GET("/api/countries")
+    fun getCountries(): Call<Countries>
+
+    @GET("/api/cities")
+    fun getCities(): Call<Cities>
 }
