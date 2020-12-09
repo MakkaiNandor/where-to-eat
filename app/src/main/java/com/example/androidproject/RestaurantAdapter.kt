@@ -9,9 +9,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.androidproject.model.Restaurant
+import com.example.androidproject.retrofit.model.Restaurant
 
-class RestaurantAdapter(private val context: Context, private var list: List<Restaurant>) : RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
+class RestaurantAdapter(private val context: Context) : RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
+
+    private var list: List<Restaurant> = listOf()
+
     class RestaurantViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val restImageView: ImageView = itemView.findViewById(R.id.rest_img)
         val nameTextView: TextView = itemView.findViewById(R.id.rest_name)

@@ -9,11 +9,6 @@ import com.example.androidproject.R
 import com.example.androidproject.RestaurantAdapter
 import com.example.androidproject.activity.MainActivity
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -21,10 +16,12 @@ class ListFragment : Fragment() {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_list, container, false)
 
+        // Set up recycler view
         val recyclerView = root.findViewById<RecyclerView>(R.id.rest_list)
-        val adapter = RestaurantAdapter(this.context!!, MainActivity.restaurants)
+        val adapter = RestaurantAdapter(requireContext())
+        adapter.setList(MainActivity.restaurants)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this.context)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
         return root
@@ -32,19 +29,22 @@ class ListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Enable options menu in action bar
         setHasOptionsMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        // Own action bar menu
         inflater.inflate(R.menu.list_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Actions for option items
         return when (item.itemId) {
             R.id.filter_item -> {
                 fragmentManager?.beginTransaction()?.replace(
                     R.id.fragment_container,
-                    FilterFragment.newInstance()
+                    FilterFragment()
                 )?.addToBackStack(null)?.commit()
                 true
             }
@@ -52,14 +52,4 @@ class ListFragment : Fragment() {
         }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @return A new instance of fragment ListFragment.
-         */
-        @JvmStatic
-        fun newInstance() = ListFragment()
-    }
 }

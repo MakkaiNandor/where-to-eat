@@ -11,7 +11,8 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
 
-        supportFragmentManager.beginTransaction().replace(R.id.current_fragment, LoginFragment.newInstance()).commit()
+        // Start the login fragment
+        supportFragmentManager.beginTransaction().replace(R.id.current_fragment, LoginFragment()).commit()
 
         /*val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)

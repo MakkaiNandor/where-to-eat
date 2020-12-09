@@ -5,15 +5,13 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.androidproject.fragment.LoadingFragment
 import com.example.androidproject.R
-import com.example.androidproject.model.Restaurant
+import com.example.androidproject.retrofit.model.Restaurant
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
         var filters : Map<String,String> = mapOf("city" to "Chicago")
-        val baseSearchFilter : Map<String, String> = mapOf("city" to "Chicago")
-        var searchFilters : Map<String, String> = mapOf()
         var restaurants : List<Restaurant> = listOf()
     }
 
@@ -21,8 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoadingFragment.newInstance()).commit()
-
+        // Click event handler for bottom navigation bar
         findViewById<BottomNavigationView>(R.id.bottom_nav).setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.list_item -> {
@@ -36,5 +33,8 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        // Start the loading fragment
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoadingFragment()).commit()
     }
 }

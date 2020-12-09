@@ -2,7 +2,7 @@ package com.example.androidproject.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.androidproject.model.Restaurant
+import com.example.androidproject.retrofit.model.Restaurant
 
 @Entity(tableName = "user_table")
 data class User (

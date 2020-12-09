@@ -14,6 +14,12 @@ abstract class UserDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE : UserDatabase? = null
 
+        /**
+         * Create new UserDatabase instance. This class is singleton.
+         *
+         * @param context The context
+         * @return The UserDatabase instance
+         */
         fun getDatabase(context: Context): UserDatabase {
             val tempInstance = INSTANCE
             if(tempInstance != null){
