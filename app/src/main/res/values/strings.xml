@@ -1,11 +1,22 @@
 <resources>
     <string name="app_name">Android Project</string>
+    <!--  fragment_login  -->
+    <string name="login_fragment_title">Login</string>
+    <string name="email_label_text">Email</string>
+    <string name="email_input_placeholder">Enter your email here</string>
+    <string name="password_label_text">Password</string>
+    <string name="password_input_placeholder">Enter your password here</string>
+    <string name="login_button_text">Login</string>
+    <string name="register_button_text">Register</string>
+    <!--  item_layout  -->
     <string name="img_desc">Restaurant image</string>
     <string name="fav_desc">Favorite button</string>
     <string name="rest_name">Name</string>
     <string name="rest_address">Address</string>
     <string name="rest_price">Price</string>
+    <!--  fragment_list  -->
     <string name="list_fragment_title">List of restaurants</string>
+    <!--  fragment_filter  -->
     <string name="filter_fragment_title">Filters</string>
     <string name="listed_data_text">Data to list</string>
     <string name="listed_data_all">All</string>
@@ -20,10 +31,11 @@
     <string name="price_3">3</string>
     <string name="price_4">4</string>
     <string name="save_button_text">Save</string>
+    <!--  bottom_nav_menu  -->
     <string name="filter_title">Filter</string>
+    <!--  list_menu  -->
     <string name="list_title">List</string>
     <string name="profile_title">Profile</string>
-    <string name="loading_message">Loading the data…</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--  fragment_loading  -->
+    <string name="loading_message">Loading…</string>
 </resources>

@@ -8,6 +8,7 @@ import com.example.androidproject.fragment.LoginFragment
 class StartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_AndroidProject)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
 

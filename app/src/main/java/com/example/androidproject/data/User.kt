@@ -11,6 +11,5 @@ data class User (
     val name : String,
     val address : String,
     val phone : String,
-    val password : String,
-    val favoriteRestaurants : List<Restaurant>
+    val password : String
 )
