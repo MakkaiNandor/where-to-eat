@@ -1,10 +1,11 @@
-package com.example.androidproject.retrofit
+package com.example.androidproject.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
 
+    //private const val BASE_URL = "https://opentable.herokuapp.com/"
     private const val BASE_URL = "https://ratpark-api.imok.space/"
 
     private val retrofit: Retrofit by lazy {
@@ -14,8 +15,8 @@ object RetrofitInstance {
             .build()
     }
 
-    val api: Api by lazy {
-        retrofit.create(Api::class.java)
+    val api: ApiInterface by lazy {
+        retrofit.create(ApiInterface::class.java)
     }
 
 }

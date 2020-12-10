@@ -5,13 +5,13 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.androidproject.fragment.LoadingFragment
 import com.example.androidproject.R
-import com.example.androidproject.retrofit.model.Restaurant
+import com.example.androidproject.api.model.Restaurant
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        var filters : Map<String,String> = mapOf("city" to "Chicago")
+        var filters : Map<String,String> = mapOf()
         var restaurants : List<Restaurant> = listOf()
     }
 

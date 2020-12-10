@@ -1,4 +1,4 @@
-package com.example.androidproject.retrofit.model
+package com.example.androidproject.api.model
 
 data class Countries(
     val count: Int,

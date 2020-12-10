@@ -11,19 +11,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.androidproject.R
-import com.example.androidproject.retrofit.RetrofitInstance.api
+import com.example.androidproject.api.RetrofitInstance.api
 import com.example.androidproject.activity.MainActivity
-import com.example.androidproject.retrofit.model.Restaurants
+import com.example.androidproject.api.ApiRepository
+import com.example.androidproject.api.DataViewModel
+import com.example.androidproject.api.DataViewModelFactory
+import com.example.androidproject.api.model.Restaurants
 import retrofit2.Call
 import retrofit2.Response
 
 class LoadingFragment : Fragment() {
 
+    private lateinit var viewModel: DataViewModel
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_loading, container, false)
+
+        val repository = ApiRepository()
+        viewModel = ViewModelProvider(this, DataViewModelFactory(repository)).get(DataViewModel::class.java)
 
         // Error message view
         val errorMessageView = root.findViewById<TextView>(R.id.error)
@@ -34,26 +44,19 @@ class LoadingFragment : Fragment() {
         if(connection){
             // Internet connection is OK
             // Get restaurants with filters
-            api.getRestaurants(MainActivity.filters).enqueue(object : retrofit2.Callback<Restaurants>{
-                override fun onResponse(call: Call<Restaurants>, response: Response<Restaurants>) {
-                    if(response.isSuccessful) {
-                        // Save the list of restaurants and redirect to list fragment
-                        MainActivity.restaurants = response.body()!!.restaurants
-                        fragmentManager?.beginTransaction()?.replace(
-                                R.id.fragment_container,
-                                ListFragment()
-                        )?.commit()
-                    }
-                    else{
-                        // Show error message
-                        val errorMsg = "Error ${response.code()}: ${response.message()}"
-                        errorMessageView.text = errorMsg
-                    }
+            viewModel.getAllRestaurants(MainActivity.filters)
+            viewModel.restaurantsResponse.observe(this, Observer {response ->
+                if(response.isSuccessful){
+                    Log.d("Response", "Successful: ${response.body()!!.restaurants.size}")
+                    MainActivity.restaurants = response.body()!!.restaurants
+                    fragmentManager?.beginTransaction()?.replace(
+                            R.id.fragment_container,
+                            ListFragment()
+                    )?.commit()
                 }
-
-                override fun onFailure(call: Call<Restaurants>, t: Throwable) {
-                    // Show error message
-                    errorMessageView.text = "${t.message}"
+                else{
+                    Log.d("Response", "Failure: ${response.code()}")
+                    errorMessageView.text = response.errorBody().toString()
                 }
             })
         }

@@ -10,8 +10,8 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import com.example.androidproject.R
-import com.example.androidproject.retrofit.RetrofitInstance.api
-import com.example.androidproject.retrofit.model.Cities
+import com.example.androidproject.api.RetrofitInstance.api
+import com.example.androidproject.api.model.Cities
 import retrofit2.Call
 import retrofit2.Response
 
@@ -34,7 +34,7 @@ class FilterFragment : Fragment() {
         }
 
         // Get cities from API
-        api.getCities().enqueue(object: retrofit2.Callback<Cities>{
+        /*api.getCities().enqueue(object: retrofit2.Callback<Cities>{
             override fun onResponse(call: Call<Cities>, response: Response<Cities>) {
                 if(response.isSuccessful) {
                     // Set up list of cities for spinner
@@ -56,7 +56,7 @@ class FilterFragment : Fragment() {
                 Log.d("Response", "Error: $t")
             }
 
-        })
+        })*/
 
         return root
     }

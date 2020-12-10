@@ -1,4 +1,4 @@
-package com.example.androidproject.retrofit.model
+package com.example.androidproject.api.model
 
 data class Stats(
     val countries: Int,

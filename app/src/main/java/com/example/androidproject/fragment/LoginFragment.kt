@@ -15,10 +15,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidproject.R
 import com.example.androidproject.activity.MainActivity
-import com.example.androidproject.data.User
-import com.example.androidproject.data.UserDatabase
-import com.example.androidproject.data.UserRepository
-import com.example.androidproject.data.UserViewModel
+import com.example.androidproject.data.*
 import kotlinx.android.synthetic.main.activity_start.view.*
 import kotlinx.coroutines.*
 
@@ -32,7 +29,7 @@ class LoginFragment : Fragment() {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_login, container, false)
 
-        userViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(activity?.application!!)).get(UserViewModel::class.java)
+        userViewModel = ViewModelProvider(this, UserViewModelFactory(activity?.application!!)).get(UserViewModel::class.java)
 
         // Error message
         errorMessageView = root.findViewById<TextView>(R.id.error)

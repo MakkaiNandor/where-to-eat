@@ -1,20 +1,31 @@
 package com.example.androidproject.fragment
 
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidproject.R
 import com.example.androidproject.RestaurantAdapter
 import com.example.androidproject.activity.MainActivity
+import com.example.androidproject.api.ApiRepository
+import com.example.androidproject.api.DataViewModel
+import com.example.androidproject.api.DataViewModelFactory
+import com.example.androidproject.data.UserViewModel
 
 class ListFragment : Fragment() {
+
+    //private lateinit var viewModel: DataViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_list, container, false)
+
+        /*val repository =  ApiRepository()
+        viewModel = ViewModelProvider(this, DataViewModelFactory(repository)).get(DataViewModel::class.java)*/
 
         // Set up recycler view
         val recyclerView = root.findViewById<RecyclerView>(R.id.rest_list)
