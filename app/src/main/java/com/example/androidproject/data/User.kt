@@ -6,9 +6,8 @@ import com.example.androidproject.retrofit.model.Restaurant
 
 @Entity(tableName = "user_table")
 data class User (
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
     val name: String,
+    @PrimaryKey
     val email: String,
     val address: String,
     val phone: String,

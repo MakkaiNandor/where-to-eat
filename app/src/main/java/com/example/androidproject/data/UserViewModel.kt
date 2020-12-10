@@ -1,6 +1,7 @@
 package com.example.androidproject.data
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -24,23 +25,23 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    private fun getUser(email: String) = repository.getUser(email)
+
+    fun checkUserForLogin(email: String, password: String): Int {
+        val count = repository.checkUserForLogin(email, password)
+        Log.d("User", "$count")
+        return count
+    }
+
+    fun checkUserForRegister(email: String): Int {
+        val count = repository.checkUserForRegister(email)
+        Log.d("User", "$count")
+        return count
+    }
+
     fun updateUser(user: User){
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateUser(user)
-        }
-    }
-
-    fun checkUser(email: String, password: String) : Boolean {
-        if(allUsers.value == null){
-            return false
-        }
-        else {
-            for (user in allUsers.value!!) {
-                if (user.email == email && user.password == password) {
-                    return true
-                }
-            }
-            return false
         }
     }
 

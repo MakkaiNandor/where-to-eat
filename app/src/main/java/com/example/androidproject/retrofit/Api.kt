@@ -6,15 +6,15 @@ import retrofit2.http.*
 
 interface Api {
 
-    @GET("/api/restaurants/{id}")
+    @GET("/restaurants/{id}")
     fun getRestaurant(@Path("id") id: Int): Call<Restaurant>
 
-    @GET("/api/restaurants")
+    @GET("/restaurants")
     fun getRestaurants(@QueryMap params: Map<String, String>): Call<Restaurants>
 
-    @GET("/api/countries")
+    @GET("/countries")
     fun getCountries(): Call<Countries>
 
-    @GET("/api/cities")
+    @GET("/cities")
     fun getCities(): Call<Cities>
 }

@@ -59,7 +59,7 @@ class LoadingFragment : Fragment() {
         }
         else{
             // No internet connection
-            val errMsg = "Not internet connection, please check it."
+            val errMsg = "No internet connection!"
             errorMessageView.text = errMsg
         }
 
