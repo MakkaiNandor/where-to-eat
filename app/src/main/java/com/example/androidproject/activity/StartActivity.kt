@@ -14,9 +14,6 @@ class StartActivity : AppCompatActivity() {
 
         // Start the login fragment
         supportFragmentManager.beginTransaction().replace(R.id.current_fragment, LoginFragment()).commit()
-
-        /*val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()*/
     }
+
 }
