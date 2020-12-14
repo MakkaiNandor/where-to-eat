@@ -1,36 +1,31 @@
 package com.example.androidproject.fragment
 
 import android.os.Bundle
-import android.provider.ContactsContract
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidproject.R
 import com.example.androidproject.RestaurantAdapter
 import com.example.androidproject.activity.MainActivity
-import com.example.androidproject.api.ApiRepository
-import com.example.androidproject.api.DataViewModel
-import com.example.androidproject.api.DataViewModelFactory
-import com.example.androidproject.data.UserViewModel
+import com.example.androidproject.api.model.Restaurant
 
-class ListFragment : Fragment() {
-
-    //private lateinit var viewModel: DataViewModel
+class ListFragment(private val listOfRestaurants: List<Restaurant>) : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_list, container, false)
 
-        /*val repository =  ApiRepository()
-        viewModel = ViewModelProvider(this, DataViewModelFactory(repository)).get(DataViewModel::class.java)*/
+        Log.d("DEBUG", MainActivity.listType.toString())
+        Log.d("DEBUG", MainActivity.filters["city"].toString())
+        Log.d("DEBUG", MainActivity.filters["price"].toString())
 
         // Set up recycler view
         val recyclerView = root.findViewById<RecyclerView>(R.id.rest_list)
         val adapter = RestaurantAdapter(requireContext())
-        adapter.setList(MainActivity.restaurants)
+        adapter.setList(listOfRestaurants)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
@@ -53,10 +48,10 @@ class ListFragment : Fragment() {
         // Actions for option items
         return when (item.itemId) {
             R.id.filter_item -> {
-                fragmentManager?.beginTransaction()?.replace(
-                    R.id.fragment_container,
+                activity?.supportFragmentManager?.beginTransaction()?.replace(
+                    R.id.fragment_container_main,
                     FilterFragment()
-                )?.addToBackStack(null)?.commit()
+                )?.commit()
                 true
             }
             else -> false

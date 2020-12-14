@@ -8,7 +8,7 @@
     tools:context=".fragment.RegisterFragment">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/register_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
@@ -18,17 +18,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/error"/>
+        app:layout_constraintBottom_toTopOf="@id/register_error"/>
 
     <TextView
-        android:id="@+id/error"
+        android:id="@+id/register_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxWidth="300dp"
         android:textColor="#AD0000"
         android:textSize="18sp"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/register_title"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toTopOf="@id/name_input"/>
@@ -40,7 +40,7 @@
         android:minWidth="200dp"
         android:inputType="textPersonName"
         android:hint="@string/name_input_hint"
-        app:layout_constraintTop_toBottomOf="@id/error"
+        app:layout_constraintTop_toBottomOf="@id/register_error"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toTopOf="@id/email_input"

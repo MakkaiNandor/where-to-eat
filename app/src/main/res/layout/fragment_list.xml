@@ -8,7 +8,7 @@
     tools:context=".fragment.ListFragment">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/list_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/list_fragment_title"
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scrollbars="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/list_title"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:itemCount="10"
         tools:listitem="@layout/item_layout" />

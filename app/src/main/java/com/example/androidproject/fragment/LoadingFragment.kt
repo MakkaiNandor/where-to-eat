@@ -14,18 +14,16 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidproject.R
-import com.example.androidproject.api.RetrofitInstance.api
 import com.example.androidproject.activity.MainActivity
 import com.example.androidproject.api.ApiRepository
 import com.example.androidproject.api.DataViewModel
 import com.example.androidproject.api.DataViewModelFactory
-import com.example.androidproject.api.model.Restaurants
-import retrofit2.Call
-import retrofit2.Response
+import com.example.androidproject.api.model.Restaurant
 
 class LoadingFragment : Fragment() {
 
     private lateinit var viewModel: DataViewModel
+    private lateinit var errorMessageView: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -36,32 +34,34 @@ class LoadingFragment : Fragment() {
         viewModel = ViewModelProvider(this, DataViewModelFactory(repository)).get(DataViewModel::class.java)
 
         // Error message view
-        val errorMessageView = root.findViewById<TextView>(R.id.error)
+        errorMessageView = root.findViewById<TextView>(R.id.error)
 
         // Check internet connection
-        val connection = isNetworkAvailable()
-
-        if(connection){
+        if(isNetworkAvailable()){
             // Internet connection is OK
             // Get restaurants with filters
+            Log.d("DEBUG", "Internet connection OK")
             viewModel.getAllRestaurants(MainActivity.filters)
-            viewModel.restaurantsResponse.observe(this, Observer {response ->
+            viewModel.restaurantsResponse.observe(viewLifecycleOwner, Observer {response ->
                 if(response.isSuccessful){
-                    Log.d("Response", "Successful: ${response.body()!!.restaurants.size}")
-                    MainActivity.restaurants = response.body()!!.restaurants
-                    fragmentManager?.beginTransaction()?.replace(
-                            R.id.fragment_container,
-                            ListFragment()
+                    Log.d("DEBUG", "Restaurants successfully arrived")
+                    //MainActivity.restaurants = response.body()!!.restaurants
+                    val restaurants: List<Restaurant> = if(response.body() == null) listOf() else response.body()!!.restaurants
+                    activity?.supportFragmentManager?.beginTransaction()?.replace(
+                            R.id.fragment_container_main,
+                            ListFragment(restaurants)
                     )?.commit()
                 }
                 else{
-                    Log.d("Response", "Failure: ${response.code()}")
-                    errorMessageView.text = response.errorBody().toString()
+                    val errMsg = "Error ${response.code()}: ${response.errorBody()}"
+                    Log.d("Response", errMsg)
+                    errorMessageView.text = errMsg
                 }
             })
         }
         else{
             // No internet connection
+            Log.d("DEBUG", "No internet connection")
             val errMsg = "No internet connection!"
             errorMessageView.text = errMsg
         }
