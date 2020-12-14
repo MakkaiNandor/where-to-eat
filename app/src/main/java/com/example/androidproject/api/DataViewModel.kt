@@ -10,32 +10,32 @@ import retrofit2.Response
 
 class DataViewModel(private val repository: ApiRepository): ViewModel() {
 
-    val restaurantResponse: MutableLiveData<Response<Restaurant>> = MutableLiveData()
+    //val restaurantResponse: MutableLiveData<Response<Restaurant>> = MutableLiveData()
     val restaurantsResponse: MutableLiveData<Response<Restaurants>> = MutableLiveData()
-    val countriesResponse: MutableLiveData<Response<Countries>> = MutableLiveData()
+    //val countriesResponse: MutableLiveData<Response<Countries>> = MutableLiveData()
     val citiesResponse: MutableLiveData<Response<Cities>> = MutableLiveData()
 
-    fun getRestaurantById(id: Int){
-        viewModelScope.launch {
-            restaurantResponse.value = repository.getRestaurantById(id)
+    /*fun getRestaurantById(id: Long){
+        viewModelScope.launch(Dispatchers.IO) {
+            restaurantResponse.postValue(repository.getRestaurantById(id))
         }
-    }
+    }*/
 
     fun getAllRestaurants(params: Map<String, String>) {
-        viewModelScope.launch {
-            restaurantsResponse.value = repository.getAllRestaurants(params)
+        viewModelScope.launch(Dispatchers.IO) {
+            restaurantsResponse.postValue(repository.getAllRestaurants(params))
         }
     }
 
-    fun getCountries() {
-        viewModelScope.launch {
-            countriesResponse.value = repository.getCountries()
+    /*fun getCountries() {
+        viewModelScope.launch(Dispatchers.IO) {
+            countriesResponse.postValue(repository.getCountries())
         }
-    }
+    }*/
 
     fun getCities() {
-        viewModelScope.launch {
-            citiesResponse.value = repository.getCities()
+        viewModelScope.launch(Dispatchers.IO) {
+            citiesResponse.postValue(repository.getCities())
         }
     }
 

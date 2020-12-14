@@ -1,4 +1,4 @@
-package com.example.androidproject.data
+package com.example.androidproject.database
 
 import android.app.Application
 import android.util.Log
@@ -12,6 +12,7 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     private val allUsers: LiveData<List<User>>
     private val repository: UserRepository
+    var loggedInUser: User? = null
 
     init {
         val userDao = UserDatabase.getDatabase(application).userDao()
@@ -25,7 +26,9 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun getUser(email: String) = repository.getUser(email)
+    fun setupLoggedInUser(email: String) {
+        loggedInUser = repository.getUser(email).value
+    }
 
     fun checkUserForLogin(email: String, password: String): Int {
         val count = repository.checkUserForLogin(email, password)

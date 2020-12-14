@@ -1,10 +1,9 @@
-package com.example.androidproject.data
+package com.example.androidproject.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.migration.Migration
 
 @Database(entities = [User::class], version = 2, exportSchema = false)
 abstract class UserDatabase : RoomDatabase() {

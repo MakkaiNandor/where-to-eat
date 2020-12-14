@@ -35,6 +35,7 @@
     <string name="price_3">3</string>
     <string name="price_4">4</string>
     <string name="save_button_text">Save</string>
+    <string name="back_button_text">Back</string>
     <!--  bottom_nav_menu  -->
     <string name="filter_title">Filter</string>
     <!--  list_menu  -->

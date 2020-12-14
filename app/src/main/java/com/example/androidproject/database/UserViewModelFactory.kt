@@ -1,4 +1,4 @@
-package com.example.androidproject.data
+package com.example.androidproject.database
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

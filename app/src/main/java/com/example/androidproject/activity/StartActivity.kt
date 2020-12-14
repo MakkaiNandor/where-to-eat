@@ -13,7 +13,7 @@ class StartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_start)
 
         // Start the login fragment
-        supportFragmentManager.beginTransaction().replace(R.id.current_fragment, LoginFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container_start, LoginFragment()).commit()
     }
 
 }

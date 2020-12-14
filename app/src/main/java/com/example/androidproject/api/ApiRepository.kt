@@ -6,20 +6,12 @@ import retrofit2.Response
 
 class ApiRepository {
 
-    suspend fun getRestaurantById(id: Int): Response<Restaurant> {
-        return api.getRestaurantById(id)
-    }
+    suspend fun getRestaurantById(id: Long) = api.getRestaurantById(id)
 
-    suspend fun getAllRestaurants(params: Map<String, String>):  Response<Restaurants> {
-        return api.getAllRestaurants(params)
-    }
+    suspend fun getAllRestaurants(params: Map<String, String>) = api.getAllRestaurants(params)
 
-    suspend fun getCountries():  Response<Countries> {
-        return api.getCountries()
-    }
+    suspend fun getCountries() = api.getCountries()
 
-    suspend fun getCities():  Response<Cities> {
-        return api.getCities()
-    }
+    suspend fun getCities() =  api.getCities()
 
 }

@@ -2,17 +2,21 @@ package com.example.androidproject.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.example.androidproject.fragment.LoadingFragment
 import com.example.androidproject.R
 import com.example.androidproject.api.model.Restaurant
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+enum class ListType {
+    ALL, FAVORITES, WITHOUT_FAVORITES
+}
+
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        var filters : Map<String,String> = mapOf()
-        var restaurants : List<Restaurant> = listOf()
+        var filters: Map<String,String> = mapOf()
+        var listType: ListType = ListType.ALL
+        var restaurants: List<Restaurant> = listOf()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,11 +27,10 @@ class MainActivity : AppCompatActivity() {
         findViewById<BottomNavigationView>(R.id.bottom_nav).setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.list_item -> {
-                    Toast.makeText(this, "List clicked!", Toast.LENGTH_LONG).show()
+                    supportFragmentManager.beginTransaction().replace(R.id.fragment_container_main, LoadingFragment()).commit()
                     true
                 }
                 R.id.profile_item -> {
-                    Toast.makeText(this, "Profile clicked!", Toast.LENGTH_LONG).show()
                     true
                 }
                 else -> false
@@ -35,6 +38,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Start the loading fragment
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LoadingFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container_main, LoadingFragment()).commit()
     }
 }

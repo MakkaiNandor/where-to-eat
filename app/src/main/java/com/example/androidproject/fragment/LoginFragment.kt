@@ -2,7 +2,6 @@ package com.example.androidproject.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,9 +14,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidproject.R
 import com.example.androidproject.activity.MainActivity
-import com.example.androidproject.data.*
-import kotlinx.android.synthetic.main.activity_start.view.*
-import kotlinx.coroutines.*
+import com.example.androidproject.database.*
 
 class LoginFragment : Fragment() {
 
@@ -32,7 +29,7 @@ class LoginFragment : Fragment() {
         userViewModel = ViewModelProvider(this, UserViewModelFactory(activity?.application!!)).get(UserViewModel::class.java)
 
         // Error message
-        errorMessageView = root.findViewById<TextView>(R.id.error)
+        errorMessageView = root.findViewById<TextView>(R.id.login_error)
         errorMessageView.text = ""
 
         // On 'Login' button clicked
@@ -43,7 +40,7 @@ class LoginFragment : Fragment() {
         }
 
         // On 'Register' button clicked
-        root.findViewById<Button>(R.id.register_button).setOnClickListener {
+        root.findViewById<Button>(R.id.goto_register_button).setOnClickListener {
             onRegisterClicked()
         }
 
@@ -56,6 +53,7 @@ class LoginFragment : Fragment() {
     private fun onLoginClicked(email: EditText, password: EditText){
         if(checkEmail(email) && checkPassword(password)) {
             if (userViewModel.checkUserForLogin(email.text.toString().trim(), password.text.toString().trim()) > 0) {
+                userViewModel.setupLoggedInUser(email.text.toString().trim())
                 redirectToMainActivity()
             } else {
                 val errMsg = "User doesn't exist!"
@@ -98,7 +96,7 @@ class LoginFragment : Fragment() {
      * Redirect user to the registration screen
      */
     private fun onRegisterClicked(){
-        fragmentManager?.beginTransaction()?.replace(R.id.current_fragment, RegisterFragment())?.addToBackStack(null)?.commit()
+        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container_start, RegisterFragment())?.addToBackStack(null)?.commit()
     }
 
     /**

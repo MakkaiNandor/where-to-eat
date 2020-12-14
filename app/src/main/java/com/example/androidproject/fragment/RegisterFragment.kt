@@ -13,8 +13,8 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidproject.R
 import com.example.androidproject.activity.MainActivity
-import com.example.androidproject.data.User
-import com.example.androidproject.data.UserViewModel
+import com.example.androidproject.database.User
+import com.example.androidproject.database.UserViewModel
 
 class RegisterFragment : Fragment() {
 
@@ -31,7 +31,7 @@ class RegisterFragment : Fragment() {
         userViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(activity?.application!!)).get(UserViewModel::class.java)
 
         // Error message
-        errorMessageView = root.findViewById<TextView>(R.id.error)
+        errorMessageView = root.findViewById<TextView>(R.id.register_error)
         errorMessageView.text = ""
 
         // On 'Register' button clicked
@@ -63,6 +63,7 @@ class RegisterFragment : Fragment() {
                         password.text.toString().trim()
                 )
                 userViewModel.addUser(newUser)
+                userViewModel.setupLoggedInUser(email.text.toString().trim())
                 redirectToMainActivity()
             }
             else{

@@ -1,7 +1,7 @@
 package com.example.androidproject
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,13 +28,16 @@ class RestaurantAdapter(private val context: Context) : RecyclerView.Adapter<Res
         return RestaurantViewHolder(itemView)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
         val currentItem = list[position]
+//        Log.d("DEBUG", "Name: ${currentItem.name}")
+//        Log.d("DEBUG", "Address: ${currentItem.address}")
+//        Log.d("DEBUG", "Price: ${currentItem.price}")
         Glide.with(context).load(currentItem.image_url).into(holder.restImageView)
         holder.nameTextView.text = currentItem.name
         holder.addressTextView.text = currentItem.address
-        holder.priceTextView.text = "Price: ${currentItem.price}"
+        val priceText = "Price: ${currentItem.price}"
+        holder.priceTextView.text = priceText
     }
 
     override fun getItemCount(): Int = list.size
