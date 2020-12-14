@@ -18,14 +18,24 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/rest_list"/>
+        app:layout_constraintBottom_toTopOf="@+id/filter_info"/>
+
+    <TextView
+        android:id="@+id/filter_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/list_title"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/rest_list"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rest_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scrollbars="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/list_title"
+        app:layout_constraintTop_toBottomOf="@+id/filter_info"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:itemCount="10"
         tools:listitem="@layout/item_layout" />

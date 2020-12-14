@@ -1,7 +1,6 @@
 package com.example.androidproject
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,12 +29,12 @@ class RestaurantAdapter(private val context: Context) : RecyclerView.Adapter<Res
 
     override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
         val currentItem = list[position]
-//        Log.d("DEBUG", "Name: ${currentItem.name}")
-//        Log.d("DEBUG", "Address: ${currentItem.address}")
-//        Log.d("DEBUG", "Price: ${currentItem.price}")
-        Glide.with(context).load(currentItem.image_url).into(holder.restImageView)
+        Glide.with(context)
+            .load(currentItem.image_url)
+            .into(holder.restImageView)
         holder.nameTextView.text = currentItem.name
-        holder.addressTextView.text = currentItem.address
+        val addressText = "${currentItem.city}, ${currentItem.address}"
+        holder.addressTextView.text = addressText
         val priceText = "Price: ${currentItem.price}"
         holder.priceTextView.text = priceText
     }

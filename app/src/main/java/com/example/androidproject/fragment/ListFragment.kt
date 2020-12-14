@@ -3,6 +3,7 @@ package com.example.androidproject.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,9 +19,9 @@ class ListFragment(private val listOfRestaurants: List<Restaurant>) : Fragment()
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_list, container, false)
 
-        Log.d("DEBUG", MainActivity.listType.toString())
-        Log.d("DEBUG", MainActivity.filters["city"].toString())
-        Log.d("DEBUG", MainActivity.filters["price"].toString())
+        // Set up message about filters
+        val filterInfoText = "Filters:\nDisplay: ${MainActivity.listType}, City: ${MainActivity.filters["city"] ?: "ALL"}, Price: ${MainActivity.filters["price"] ?: "ALL"}"
+        root.findViewById<TextView>(R.id.filter_info).text = filterInfoText
 
         // Set up recycler view
         val recyclerView = root.findViewById<RecyclerView>(R.id.rest_list)
