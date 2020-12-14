@@ -12,7 +12,7 @@ import com.example.androidproject.RestaurantAdapter
 import com.example.androidproject.activity.MainActivity
 import com.example.androidproject.api.model.Restaurant
 
-class ListFragment(private val listOfRestaurants: List<Restaurant>) : Fragment() {
+class ListFragment(private val listOfRestaurants: List<Restaurant>) : Fragment(), RestaurantAdapter.OnItemClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -25,13 +25,17 @@ class ListFragment(private val listOfRestaurants: List<Restaurant>) : Fragment()
 
         // Set up recycler view
         val recyclerView = root.findViewById<RecyclerView>(R.id.rest_list)
-        val adapter = RestaurantAdapter(requireContext())
+        val adapter = RestaurantAdapter(requireContext(), this)
         adapter.setList(listOfRestaurants)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
         return root
+    }
+
+    override fun onItemClick(position: Int) {
+        Log.d("DEBUG", "Item $position clicked")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

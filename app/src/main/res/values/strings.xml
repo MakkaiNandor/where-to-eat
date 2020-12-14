@@ -43,4 +43,12 @@
     <string name="profile_title">Profile</string>
     <!--  fragment_loading  -->
     <string name="loading_message">Loading…</string>
+    <!--  fragment profile  -->
+    <string name="personal_data_title">Personal data</string>
+    <string name="edit_button_text">Edit</string>
+    <string name="name_label">Name:</string>
+    <string name="email_label">Email:</string>
+    <string name="address_label">Address:</string>
+    <string name="phone_label">Phone:</string>
+    <string name="favorites_title">Favorite restaurants</string>
 </resources>

@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.example.androidproject.fragment.LoadingFragment
 import com.example.androidproject.R
 import com.example.androidproject.api.model.Restaurant
+import com.example.androidproject.fragment.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 enum class ListType {
@@ -16,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         var filters: Map<String,String> = mapOf()
         var listType: ListType = ListType.ALL
-        var restaurants: List<Restaurant> = listOf()
+        //var restaurants: List<Restaurant> = listOf()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.profile_item -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.fragment_container_main, ProfileFragment()).commit()
                     true
                 }
                 else -> false
