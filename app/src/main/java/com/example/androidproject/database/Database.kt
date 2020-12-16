@@ -4,15 +4,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.androidproject.database.entity.User
 
 @Database(entities = [User::class], version = 2, exportSchema = false)
-abstract class UserDatabase : RoomDatabase() {
+abstract class Database : RoomDatabase() {
 
-    abstract fun userDao(): UserDao
+    abstract fun userDao(): DbDao
 
     companion object {
         @Volatile
-        private var INSTANCE : UserDatabase? = null
+        private var INSTANCE : com.example.androidproject.database.Database? = null
 
         /**
          * Create new UserDatabase instance. This class is singleton.
@@ -20,7 +21,7 @@ abstract class UserDatabase : RoomDatabase() {
          * @param context The context
          * @return The UserDatabase instance
          */
-        fun getDatabase(context: Context): UserDatabase {
+        fun getDatabase(context: Context): com.example.androidproject.database.Database {
             val tempInstance = INSTANCE
             if(tempInstance != null){
                 return tempInstance
@@ -28,7 +29,7 @@ abstract class UserDatabase : RoomDatabase() {
             synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    UserDatabase::class.java,
+                    Database::class.java,
                     "user_database"
                 ).fallbackToDestructiveMigration().allowMainThreadQueries().build()
                 INSTANCE = instance

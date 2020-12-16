@@ -13,12 +13,12 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidproject.R
 import com.example.androidproject.activity.MainActivity
-import com.example.androidproject.database.User
-import com.example.androidproject.database.UserViewModel
+import com.example.androidproject.database.entity.User
+import com.example.androidproject.database.DbViewModel
 
 class RegisterFragment : Fragment() {
 
-    private lateinit var userViewModel: UserViewModel
+    private lateinit var dbViewModel: DbViewModel
     private lateinit var errorMessageView: TextView
 
     override fun onCreateView(
@@ -28,7 +28,7 @@ class RegisterFragment : Fragment() {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_register, container, false)
 
-        userViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(activity?.application!!)).get(UserViewModel::class.java)
+        dbViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(activity?.application!!)).get(DbViewModel::class.java)
 
         // Error message
         errorMessageView = root.findViewById<TextView>(R.id.register_error)
@@ -54,7 +54,7 @@ class RegisterFragment : Fragment() {
      */
     private fun onRegisterClicked(name: EditText, email: EditText, address: EditText, phone: EditText, password: EditText, confirmation: EditText){
         if(checkEmail(email) && checkPasswords(password, confirmation) && checkOthers(name, address, phone)){
-            if(userViewModel.checkUserForRegister(email.text.toString().trim()) == 0){
+            if(dbViewModel.checkUserForRegister(email.text.toString().trim()) == 0){
                 val newUser = User(
                         name.text.toString().trim(),
                         email.text.toString().trim(),
@@ -62,8 +62,8 @@ class RegisterFragment : Fragment() {
                         phone.text.toString().trim(),
                         password.text.toString().trim()
                 )
-                userViewModel.addUser(newUser)
-                userViewModel.setupLoggedInUser(email.text.toString().trim())
+                dbViewModel.addUser(newUser)
+                dbViewModel.setupLoggedInUser(email.text.toString().trim())
                 redirectToMainActivity()
             }
             else{

@@ -2,11 +2,13 @@ package com.example.androidproject.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.androidproject.database.entity.*
 
 @Dao
-interface UserDao {
+interface DbDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    // User
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun addUser(user: User)
 
     @Query("SELECT * FROM user_table")
@@ -23,5 +25,16 @@ interface UserDao {
 
     @Update
     suspend fun updateUser(user: User)
+
+    // Favorite
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun addRestaurant(restaurant: Favorite)
+
+    // User's favorites
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun addUserFavorite(userFavorite: UserFavorite)
+
+    @Query("SELECT * FROM favorite_table WHERE id IN (SELECT favoriteId FROM user_favorite_table WHERE userId = :userEmail)")
+    fun getUserFavorites(userEmail: String): List<Favorite>
 
 }

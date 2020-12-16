@@ -5,18 +5,19 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.example.androidproject.database.entity.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UserViewModel(application: Application) : AndroidViewModel(application) {
+class DbViewModel(application: Application) : AndroidViewModel(application) {
 
     private val allUsers: LiveData<List<User>>
-    private val repository: UserRepository
+    private val repository: DbRepository
     var loggedInUser: User? = null
 
     init {
-        val userDao = UserDatabase.getDatabase(application).userDao()
-        repository = UserRepository(userDao)
+        val userDao = Database.getDatabase(application).userDao()
+        repository = DbRepository(userDao)
         allUsers = repository.allUsers
     }
 

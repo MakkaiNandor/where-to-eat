@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidproject.R
 import com.example.androidproject.activity.MainActivity
@@ -18,7 +17,7 @@ import com.example.androidproject.database.*
 
 class LoginFragment : Fragment() {
 
-    private lateinit var userViewModel: UserViewModel
+    private lateinit var dbViewModel: DbViewModel
     private lateinit var errorMessageView: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -26,7 +25,7 @@ class LoginFragment : Fragment() {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_login, container, false)
 
-        userViewModel = ViewModelProvider(this, UserViewModelFactory(activity?.application!!)).get(UserViewModel::class.java)
+        dbViewModel = ViewModelProvider(this, DbViewModelFactory(activity?.application!!)).get(DbViewModel::class.java)
 
         // Error message
         errorMessageView = root.findViewById<TextView>(R.id.login_error)
@@ -52,8 +51,8 @@ class LoginFragment : Fragment() {
      */
     private fun onLoginClicked(email: EditText, password: EditText){
         if(checkEmail(email) && checkPassword(password)) {
-            if (userViewModel.checkUserForLogin(email.text.toString().trim(), password.text.toString().trim()) > 0) {
-                userViewModel.setupLoggedInUser(email.text.toString().trim())
+            if (dbViewModel.checkUserForLogin(email.text.toString().trim(), password.text.toString().trim()) > 0) {
+                dbViewModel.setupLoggedInUser(email.text.toString().trim())
                 redirectToMainActivity()
             } else {
                 val errMsg = "User doesn't exist!"
