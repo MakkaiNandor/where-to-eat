@@ -2,7 +2,7 @@ package com.example.androidproject.database.entity
 
 import androidx.room.*
 
-@Entity(tableName = "user_favorite_table", primaryKeys = ["userId", "restaurantId"],
+@Entity(tableName = "user_favorite_table", primaryKeys = ["userId", "favoriteId"],
     foreignKeys = [
         ForeignKey(
                 entity = User::class,

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -16,26 +17,45 @@ class RestaurantAdapter(private val context: Context, private val listener: OnIt
 
     interface OnItemClickListener{
         fun onItemClick(position: Int)
+        fun onFavIconClick(item: Restaurant, favorite: Boolean)
     }
 
     private var list: List<Restaurant> = listOf()
+    private var userFavorites: MutableList<Long> = mutableListOf()
 
     inner class RestaurantViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        val restImageView: ImageView = itemView.findViewById(R.id.rest_img)
-        val nameTextView: TextView = itemView.findViewById(R.id.rest_name)
-        val addressTextView: TextView = itemView.findViewById(R.id.rest_address)
-        val priceTextView: TextView = itemView.findViewById(R.id.rest_price)
-        val favImageView: ImageView = itemView.findViewById(R.id.favorite_btn)
+        val restImageView: ImageView = itemView.findViewById<ImageView>(R.id.rest_img)
+        val nameTextView: TextView = itemView.findViewById<TextView>(R.id.rest_name)
+        val addressTextView: TextView = itemView.findViewById<TextView>(R.id.rest_address)
+        val priceTextView: TextView = itemView.findViewById<TextView>(R.id.rest_price)
+        val favImageView: ImageButton = itemView.findViewById<ImageButton>(R.id.favorite_btn)
 
         init {
             itemView.setOnClickListener(this)
+            favImageView.setOnClickListener (this)
         }
 
         override fun onClick(v: View?) {
-            Log.d("DEBUG", v.toString())
             val position: Int = adapterPosition
             if(position != RecyclerView.NO_POSITION){
-                listener.onItemClick(position)
+                if(v?.id == R.id.favorite_btn){
+                    val favIcon = v as ImageButton
+                    val id = list[position].id
+                    if(userFavorites.contains(id)){
+                        favIcon.setImageResource(android.R.drawable.btn_star_big_off)
+                        userFavorites.remove(id)
+                        listener.onFavIconClick(list[position], false)
+                    }
+                    else{
+                        favIcon.setImageResource(android.R.drawable.btn_star_big_on)
+                        userFavorites.add(id)
+                        listener.onFavIconClick(list[position], true)
+                    }
+                    Log.d("DEBUG", "Favorites: ${userFavorites.size}")
+                }
+                else {
+                    listener.onItemClick(position)
+                }
             }
         }
     }
@@ -47,15 +67,20 @@ class RestaurantAdapter(private val context: Context, private val listener: OnIt
 
     override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
         val currentItem = list[position]
-        Glide.with(context)
+        /*Glide.with(context)
             .load(currentItem.image_url)
-            .into(holder.restImageView)
+            .into(holder.restImageView)*/
         holder.nameTextView.text = currentItem.name
         val addressText = "${currentItem.city}, ${currentItem.address}"
         holder.addressTextView.text = addressText
         val priceText = "Price: ${currentItem.price}"
         holder.priceTextView.text = priceText
-        holder.favImageView.setImageResource(android.R.drawable.star_big_off)
+        if(userFavorites.contains(currentItem.id)){
+            holder.favImageView.setImageResource(android.R.drawable.btn_star_big_on)
+        }
+        else {
+            holder.favImageView.setImageResource(android.R.drawable.btn_star_big_off)
+        }
     }
 
     override fun getItemCount(): Int = list.size
@@ -68,6 +93,10 @@ class RestaurantAdapter(private val context: Context, private val listener: OnIt
     fun addData(newList: List<Restaurant>){
         this.list += newList
         notifyDataSetChanged()
+    }
+
+    fun setUserFavorites(list: MutableList<Long>){
+        this.userFavorites = list
     }
 
 }

@@ -45,7 +45,6 @@ class LoadingFragment : Fragment() {
             viewModel.restaurantsResponse.observe(viewLifecycleOwner, Observer {response ->
                 if(response.isSuccessful){
                     Log.d("DEBUG", "Restaurants successfully arrived")
-                    //MainActivity.restaurants = response.body()!!.restaurants
                     val restaurants: List<Restaurant> = if(response.body() == null) listOf() else response.body()!!.restaurants
                     activity?.supportFragmentManager?.beginTransaction()?.replace(
                             R.id.fragment_container_main,

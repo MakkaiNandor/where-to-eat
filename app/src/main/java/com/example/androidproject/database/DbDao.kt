@@ -1,6 +1,5 @@
 package com.example.androidproject.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.androidproject.database.entity.*
 
@@ -12,10 +11,10 @@ interface DbDao {
     suspend fun addUser(user: User)
 
     @Query("SELECT * FROM user_table")
-    fun allUsers(): LiveData<List<User>>
+    fun allUsers(): List<User>
 
     @Query("SELECT * FROM user_table WHERE email = :email")
-    fun getUser(email: String): LiveData<User>
+    fun getUser(email: String): User
 
     @Query("SELECT count(*) FROM user_table WHERE email = :email AND password = :password")
     fun checkUserForLogin(email: String, password: String): Int
@@ -33,6 +32,9 @@ interface DbDao {
     // User's favorites
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun addUserFavorite(userFavorite: UserFavorite)
+
+    @Delete
+    suspend fun removeUserFavorite(userFavorite: UserFavorite)
 
     @Query("SELECT * FROM favorite_table WHERE id IN (SELECT favoriteId FROM user_favorite_table WHERE userId = :userEmail)")
     fun getUserFavorites(userEmail: String): List<Favorite>

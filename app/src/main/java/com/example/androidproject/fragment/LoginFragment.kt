@@ -25,7 +25,7 @@ class LoginFragment : Fragment() {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_login, container, false)
 
-        dbViewModel = ViewModelProvider(this, DbViewModelFactory(activity?.application!!)).get(DbViewModel::class.java)
+        dbViewModel = ViewModelProvider(requireActivity(), DbViewModelFactory(activity?.application!!)).get(DbViewModel::class.java)
 
         // Error message
         errorMessageView = root.findViewById<TextView>(R.id.login_error)
@@ -51,9 +51,12 @@ class LoginFragment : Fragment() {
      */
     private fun onLoginClicked(email: EditText, password: EditText){
         if(checkEmail(email) && checkPassword(password)) {
-            if (dbViewModel.checkUserForLogin(email.text.toString().trim(), password.text.toString().trim()) > 0) {
-                dbViewModel.setupLoggedInUser(email.text.toString().trim())
-                redirectToMainActivity()
+            val emailVal = email.text.toString().trim()
+            val passVal = password.text.toString().trim()
+            if (dbViewModel.checkUserForLogin(emailVal, passVal) > 0) {
+                /*dbViewModel.loggedInUserId = emailVal
+                dbViewModel.setupLoggedInUser()*/
+                redirectToMainActivity(emailVal)
             } else {
                 val errMsg = "User doesn't exist!"
                 errorMessageView.text = errMsg
@@ -101,8 +104,9 @@ class LoginFragment : Fragment() {
     /**
      * Start the Main Activity.
      */
-    private fun redirectToMainActivity(){
+    private fun redirectToMainActivity(email: String){
         val intent = Intent(requireContext(), MainActivity::class.java)
+        intent.putExtra("USER_EMAIL", email)
         startActivity(intent)
         activity?.finish()
     }

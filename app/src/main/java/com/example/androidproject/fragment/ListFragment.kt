@@ -5,19 +5,28 @@ import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidproject.R
 import com.example.androidproject.RestaurantAdapter
 import com.example.androidproject.activity.MainActivity
 import com.example.androidproject.api.model.Restaurant
+import com.example.androidproject.database.DbViewModel
+import com.example.androidproject.database.DbViewModelFactory
 
 class ListFragment(private val listOfRestaurants: List<Restaurant>) : Fragment(), RestaurantAdapter.OnItemClickListener {
+
+    lateinit var dbViewModel: DbViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_list, container, false)
+
+        dbViewModel = ViewModelProvider(requireActivity(), DbViewModelFactory(activity?.application!!)).get(DbViewModel::class.java)
+
+        Log.d("DEBUG", "Logged in user: ${dbViewModel.loggedInUser?.name}")
 
         // Set up message about filters
         val filterInfoText = "Filters:\nDisplay: ${MainActivity.listType}, City: ${MainActivity.filters["city"] ?: "ALL"}, Price: ${MainActivity.filters["price"] ?: "ALL"}"
@@ -27,6 +36,7 @@ class ListFragment(private val listOfRestaurants: List<Restaurant>) : Fragment()
         val recyclerView = root.findViewById<RecyclerView>(R.id.rest_list)
         val adapter = RestaurantAdapter(requireContext(), this)
         adapter.setList(listOfRestaurants)
+        adapter.setUserFavorites(dbViewModel.getUserFavorites().map { it.id } as MutableList<Long>)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
@@ -36,6 +46,15 @@ class ListFragment(private val listOfRestaurants: List<Restaurant>) : Fragment()
 
     override fun onItemClick(position: Int) {
         Log.d("DEBUG", "Item $position clicked")
+    }
+
+    override fun onFavIconClick(item: Restaurant, favorite: Boolean) {
+        if(favorite){
+            dbViewModel.addUserFavorite(item)
+        }
+        else{
+            dbViewModel.removeUserFavorite(item)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

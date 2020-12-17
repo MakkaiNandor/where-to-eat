@@ -28,7 +28,7 @@ class RegisterFragment : Fragment() {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_register, container, false)
 
-        dbViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(activity?.application!!)).get(DbViewModel::class.java)
+        dbViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(activity?.application!!)).get(DbViewModel::class.java)
 
         // Error message
         errorMessageView = root.findViewById<TextView>(R.id.register_error)
@@ -63,8 +63,7 @@ class RegisterFragment : Fragment() {
                         password.text.toString().trim()
                 )
                 dbViewModel.addUser(newUser)
-                dbViewModel.setupLoggedInUser(email.text.toString().trim())
-                redirectToMainActivity()
+                redirectToMainActivity(newUser.email)
             }
             else{
                 val errMsg = "One user already exists with the same email address!"
@@ -143,8 +142,9 @@ class RegisterFragment : Fragment() {
     /**
      * Start the Main Activity.
      */
-    private fun redirectToMainActivity(){
+    private fun redirectToMainActivity(email: String){
         val intent = Intent(requireContext(), MainActivity::class.java)
+        intent.putExtra("USER_EMAIL", email)
         startActivity(intent)
         activity?.finish()
     }
