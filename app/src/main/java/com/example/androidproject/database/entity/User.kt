@@ -1,6 +1,7 @@
 package com.example.androidproject.database.entity
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "user_table")

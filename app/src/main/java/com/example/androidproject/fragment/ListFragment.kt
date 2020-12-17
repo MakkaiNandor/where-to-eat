@@ -11,35 +11,37 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidproject.R
 import com.example.androidproject.RestaurantAdapter
 import com.example.androidproject.activity.MainActivity
+import com.example.androidproject.api.ApiRepository
+import com.example.androidproject.api.ApiViewModel
+import com.example.androidproject.api.ApiViewModelFactory
 import com.example.androidproject.api.model.Restaurant
 import com.example.androidproject.database.DbViewModel
 import com.example.androidproject.database.DbViewModelFactory
 
 class ListFragment(private val listOfRestaurants: List<Restaurant>) : Fragment(), RestaurantAdapter.OnItemClickListener {
 
-    lateinit var dbViewModel: DbViewModel
+    private lateinit var dbViewModel: DbViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_list, container, false)
 
-        dbViewModel = ViewModelProvider(requireActivity(), DbViewModelFactory(activity?.application!!)).get(DbViewModel::class.java)
+        dbViewModel = ViewModelProvider(this, DbViewModelFactory(requireActivity().application)).get(DbViewModel::class.java)
 
-        Log.d("DEBUG", "Logged in user: ${dbViewModel.loggedInUser?.name}")
+        Log.d("DEBUG", "Logged in user: ${MainActivity.loggedInUser?.name}")
 
         // Set up message about filters
-        val filterInfoText = "Filters:\nDisplay: ${MainActivity.listType}, City: ${MainActivity.filters["city"] ?: "ALL"}, Price: ${MainActivity.filters["price"] ?: "ALL"}"
+        val filterInfoText = "Filters:\nDisplay: ${MainActivity.displayType}, City: ${MainActivity.filters["city"] ?: "ALL"}, Price: ${MainActivity.filters["price"] ?: "ALL"}"
         root.findViewById<TextView>(R.id.filter_info).text = filterInfoText
 
         // Set up recycler view
-        val recyclerView = root.findViewById<RecyclerView>(R.id.rest_list)
+        val restaurantList = root.findViewById<RecyclerView>(R.id.rest_list)
         val adapter = RestaurantAdapter(requireContext(), this)
-        adapter.setList(listOfRestaurants)
-        adapter.setUserFavorites(dbViewModel.getUserFavorites().map { it.id } as MutableList<Long>)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.setHasFixedSize(true)
+        adapter.setRestaurants(listOfRestaurants)
+        adapter.setUserFavorites(dbViewModel.getUserFavorites().map { it.id })
+        restaurantList.adapter = adapter
+        restaurantList.layoutManager = LinearLayoutManager(requireContext())
+        restaurantList.setHasFixedSize(true)
 
         return root
     }
@@ -72,10 +74,10 @@ class ListFragment(private val listOfRestaurants: List<Restaurant>) : Fragment()
         // Actions for option items
         return when (item.itemId) {
             R.id.filter_item -> {
-                activity?.supportFragmentManager?.beginTransaction()?.replace(
+                requireActivity().supportFragmentManager.beginTransaction().replace(
                     R.id.fragment_container_main,
                     FilterFragment()
-                )?.commit()
+                ).commit()
                 true
             }
             else -> false

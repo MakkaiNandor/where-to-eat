@@ -25,10 +25,10 @@ class LoginFragment : Fragment() {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_login, container, false)
 
-        dbViewModel = ViewModelProvider(requireActivity(), DbViewModelFactory(activity?.application!!)).get(DbViewModel::class.java)
+        dbViewModel = ViewModelProvider(this, DbViewModelFactory(requireActivity().application)).get(DbViewModel::class.java)
 
         // Error message
-        errorMessageView = root.findViewById<TextView>(R.id.login_error)
+        errorMessageView = root.findViewById(R.id.login_error)
         errorMessageView.text = ""
 
         // On 'Login' button clicked
@@ -54,8 +54,7 @@ class LoginFragment : Fragment() {
             val emailVal = email.text.toString().trim()
             val passVal = password.text.toString().trim()
             if (dbViewModel.checkUserForLogin(emailVal, passVal) > 0) {
-                /*dbViewModel.loggedInUserId = emailVal
-                dbViewModel.setupLoggedInUser()*/
+                MainActivity.loggedInUser = dbViewModel.getUser(emailVal)
                 redirectToMainActivity(emailVal)
             } else {
                 val errMsg = "User doesn't exist!"
@@ -98,7 +97,7 @@ class LoginFragment : Fragment() {
      * Redirect user to the registration screen
      */
     private fun onRegisterClicked(){
-        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragment_container_start, RegisterFragment())?.addToBackStack(null)?.commit()
+        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_container_start, RegisterFragment()).addToBackStack(null).commit()
     }
 
     /**
@@ -106,9 +105,8 @@ class LoginFragment : Fragment() {
      */
     private fun redirectToMainActivity(email: String){
         val intent = Intent(requireContext(), MainActivity::class.java)
-        intent.putExtra("USER_EMAIL", email)
         startActivity(intent)
-        activity?.finish()
+        requireActivity().finish()
     }
 
 }

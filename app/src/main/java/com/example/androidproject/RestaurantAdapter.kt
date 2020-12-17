@@ -11,24 +11,26 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.androidproject.api.model.Restaurant
-import kotlinx.android.synthetic.main.item_layout.view.*
 
-class RestaurantAdapter(private val context: Context, private val listener: OnItemClickListener) : RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
+class RestaurantAdapter(
+    private val context: Context,
+    private val listener: OnItemClickListener
+) : RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
 
     interface OnItemClickListener{
         fun onItemClick(position: Int)
         fun onFavIconClick(item: Restaurant, favorite: Boolean)
     }
 
-    private var list: List<Restaurant> = listOf()
+    private var restaurants: MutableList<Restaurant> = mutableListOf()
     private var userFavorites: MutableList<Long> = mutableListOf()
 
     inner class RestaurantViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        val restImageView: ImageView = itemView.findViewById<ImageView>(R.id.rest_img)
-        val nameTextView: TextView = itemView.findViewById<TextView>(R.id.rest_name)
-        val addressTextView: TextView = itemView.findViewById<TextView>(R.id.rest_address)
-        val priceTextView: TextView = itemView.findViewById<TextView>(R.id.rest_price)
-        val favImageView: ImageButton = itemView.findViewById<ImageButton>(R.id.favorite_btn)
+        val restImageView: ImageView = itemView.findViewById(R.id.rest_img)
+        val nameTextView: TextView = itemView.findViewById(R.id.rest_name)
+        val addressTextView: TextView = itemView.findViewById(R.id.rest_address)
+        val priceTextView: TextView = itemView.findViewById(R.id.rest_price)
+        val favImageView: ImageButton = itemView.findViewById(R.id.favorite_btn)
 
         init {
             itemView.setOnClickListener(this)
@@ -40,16 +42,16 @@ class RestaurantAdapter(private val context: Context, private val listener: OnIt
             if(position != RecyclerView.NO_POSITION){
                 if(v?.id == R.id.favorite_btn){
                     val favIcon = v as ImageButton
-                    val id = list[position].id
+                    val id = restaurants[position].id
                     if(userFavorites.contains(id)){
                         favIcon.setImageResource(android.R.drawable.btn_star_big_off)
                         userFavorites.remove(id)
-                        listener.onFavIconClick(list[position], false)
+                        listener.onFavIconClick(restaurants[position], false)
                     }
                     else{
                         favIcon.setImageResource(android.R.drawable.btn_star_big_on)
                         userFavorites.add(id)
-                        listener.onFavIconClick(list[position], true)
+                        listener.onFavIconClick(restaurants[position], true)
                     }
                     Log.d("DEBUG", "Favorites: ${userFavorites.size}")
                 }
@@ -66,10 +68,8 @@ class RestaurantAdapter(private val context: Context, private val listener: OnIt
     }
 
     override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
-        val currentItem = list[position]
-        /*Glide.with(context)
-            .load(currentItem.image_url)
-            .into(holder.restImageView)*/
+        val currentItem = restaurants[position]
+        //Glide.with(context).load(currentItem.image_url).into(holder.restImageView)
         holder.nameTextView.text = currentItem.name
         val addressText = "${currentItem.city}, ${currentItem.address}"
         holder.addressTextView.text = addressText
@@ -83,20 +83,20 @@ class RestaurantAdapter(private val context: Context, private val listener: OnIt
         }
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = restaurants.size
 
-    fun setList(list: List<Restaurant>){
-        this.list = list
+    fun setRestaurants(list: List<Restaurant>){
+        this.restaurants = list as MutableList<Restaurant>
         notifyDataSetChanged()
     }
 
-    fun addData(newList: List<Restaurant>){
-        this.list += newList
+    fun addRestaurants(newList: List<Restaurant>){
+        this.restaurants.addAll(newList)
         notifyDataSetChanged()
     }
 
-    fun setUserFavorites(list: MutableList<Long>){
-        this.userFavorites = list
+    fun setUserFavorites(list: List<Long>){
+        this.userFavorites = list as MutableList<Long>
     }
 
 }

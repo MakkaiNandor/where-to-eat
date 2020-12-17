@@ -3,6 +3,7 @@ package com.example.androidproject.database.entity
 import androidx.room.*
 
 @Entity(tableName = "user_favorite_table", primaryKeys = ["userId", "favoriteId"],
+    indices = [ Index(value = ["userId"]), Index(value = ["favoriteId"]) ],
     foreignKeys = [
         ForeignKey(
                 entity = User::class,

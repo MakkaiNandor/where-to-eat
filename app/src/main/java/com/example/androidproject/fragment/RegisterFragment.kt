@@ -21,17 +21,14 @@ class RegisterFragment : Fragment() {
     private lateinit var dbViewModel: DbViewModel
     private lateinit var errorMessageView: TextView
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_register, container, false)
 
-        dbViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(activity?.application!!)).get(DbViewModel::class.java)
+        dbViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(DbViewModel::class.java)
 
         // Error message
-        errorMessageView = root.findViewById<TextView>(R.id.register_error)
+        errorMessageView = root.findViewById(R.id.register_error)
         errorMessageView.text = ""
 
         // On 'Register' button clicked
@@ -63,6 +60,7 @@ class RegisterFragment : Fragment() {
                         password.text.toString().trim()
                 )
                 dbViewModel.addUser(newUser)
+                MainActivity.loggedInUser = newUser
                 redirectToMainActivity(newUser.email)
             }
             else{
@@ -144,9 +142,8 @@ class RegisterFragment : Fragment() {
      */
     private fun redirectToMainActivity(email: String){
         val intent = Intent(requireContext(), MainActivity::class.java)
-        intent.putExtra("USER_EMAIL", email)
         startActivity(intent)
-        activity?.finish()
+        requireActivity().finish()
     }
 
 }

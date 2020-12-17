@@ -1,5 +1,6 @@
 package com.example.androidproject.database
 
+import androidx.lifecycle.LiveData
 import com.example.androidproject.database.entity.Favorite
 import com.example.androidproject.database.entity.User
 import com.example.androidproject.database.entity.UserFavorite
@@ -24,6 +25,10 @@ class DbRepository(private val dbDao: DbDao) {
 
     suspend fun addRestaurant(restaurant: Favorite){
         dbDao.addRestaurant(restaurant)
+    }
+
+    suspend fun deleteUnusedRestaurants(){
+        dbDao.deleteUnusedRestaurants()
     }
 
     suspend fun addUserFavorite(userFavorite: UserFavorite){
