@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.DetailFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/default_data_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/restaurant_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
+                android:textColor="@color/purple_500"
+                android:textSize="24sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/restaurant_image"/>
+
+            <ImageView
+                android:id="@+id/restaurant_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:src="@drawable/logo"
+                android:contentDescription="@string/img_desc"
+                app:layout_constraintTop_toBottomOf="@+id/restaurant_name"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/google_maps_btn"/>
+
+            <ImageView
+                android:id="@+id/google_maps_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
+                android:contentDescription="@string/img_desc"
+                android:src="@android:drawable/ic_dialog_map"
+                app:tint="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/restaurant_image"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/favorite_btn"
+                app:layout_constraintBottom_toTopOf="@id/price_label" />
+
+            <ImageView
+                android:id="@+id/favorite_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/img_desc"
+                android:src="@android:drawable/btn_star_big_off"
+                app:layout_constraintBottom_toBottomOf="@id/google_maps_btn"
+                app:layout_constraintLeft_toRightOf="@id/google_maps_btn"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/google_maps_btn"/>
+
+            <TextView
+                android:id="@+id/price_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:text="@string/price_label_text"
+                app:layout_constraintTop_toBottomOf="@+id/google_maps_btn"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/country_label"
+                app:layout_constraintHorizontal_bias="0.2"/>
+
+            <TextView
+                android:id="@+id/price_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                app:layout_constraintTop_toTopOf="@id/price_label"
+                app:layout_constraintLeft_toRightOf="@id/price_label"/>
+
+            <TextView
+                android:id="@+id/country_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:text="@string/country_label_text"
+                app:layout_constraintTop_toBottomOf="@+id/price_label"
+                app:layout_constraintRight_toRightOf="@+id/price_label"
+                app:layout_constraintBottom_toTopOf="@+id/state_label"/>
+
+            <TextView
+                android:id="@+id/country_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                app:layout_constraintTop_toTopOf="@id/country_label"
+                app:layout_constraintLeft_toRightOf="@id/country_label"/>
+
+            <TextView
+                android:id="@+id/state_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:text="@string/state_label_text"
+                app:layout_constraintTop_toBottomOf="@+id/country_label"
+                app:layout_constraintRight_toRightOf="@+id/country_label"
+                app:layout_constraintBottom_toTopOf="@+id/area_label"/>
+
+            <TextView
+                android:id="@+id/state_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                app:layout_constraintTop_toTopOf="@id/state_label"
+                app:layout_constraintLeft_toRightOf="@id/state_label"/>
+
+            <TextView
+                android:id="@+id/area_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:text="@string/area_label_text"
+                app:layout_constraintTop_toBottomOf="@+id/state_label"
+                app:layout_constraintRight_toRightOf="@+id/state_label"
+                app:layout_constraintBottom_toTopOf="@+id/city_label"/>
+
+            <TextView
+                android:id="@+id/area_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                app:layout_constraintTop_toTopOf="@id/area_label"
+                app:layout_constraintLeft_toRightOf="@id/area_label"/>
+
+            <TextView
+                android:id="@+id/city_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:text="@string/city_label_text"
+                app:layout_constraintTop_toBottomOf="@+id/area_label"
+                app:layout_constraintRight_toRightOf="@+id/area_label"
+                app:layout_constraintBottom_toTopOf="@+id/address_label"/>
+
+            <TextView
+                android:id="@+id/city_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                app:layout_constraintTop_toTopOf="@id/city_label"
+                app:layout_constraintLeft_toRightOf="@id/city_label"/>
+
+            <TextView
+                android:id="@+id/address_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:text="@string/address_label_text"
+                app:layout_constraintTop_toBottomOf="@+id/city_label"
+                app:layout_constraintRight_toRightOf="@+id/city_label"
+                app:layout_constraintBottom_toTopOf="@+id/postal_code_label"/>
+
+            <TextView
+                android:id="@+id/address_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                app:layout_constraintTop_toTopOf="@id/address_label"
+                app:layout_constraintLeft_toRightOf="@id/address_label"/>
+
+            <TextView
+                android:id="@+id/postal_code_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:text="@string/postal_code_label_text"
+                app:layout_constraintTop_toBottomOf="@+id/address_label"
+                app:layout_constraintRight_toRightOf="@+id/address_label"
+                app:layout_constraintBottom_toTopOf="@+id/phone_label"/>
+
+            <TextView
+                android:id="@+id/postal_code_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                app:layout_constraintTop_toTopOf="@id/postal_code_label"
+                app:layout_constraintLeft_toRightOf="@id/postal_code_label"/>
+
+            <TextView
+                android:id="@+id/phone_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:text="@string/phone_label_text"
+                app:layout_constraintTop_toBottomOf="@+id/postal_code_label"
+                app:layout_constraintRight_toRightOf="@+id/postal_code_label"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/phone_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                app:layout_constraintTop_toTopOf="@id/phone_label"
+                app:layout_constraintLeft_toRightOf="@id/phone_label"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

@@ -54,4 +54,13 @@
     <string name="address_label">Address:</string>
     <string name="phone_label">Phone:</string>
     <string name="favorites_title">Favorite restaurants</string>
+    <!--  fragment_detail  -->
+    <string name="price_label_text">Price:</string>
+    <string name="country_label_text">Country:</string>
+    <string name="state_label_text">State:</string>
+    <string name="area_label_text">Area:</string>
+    <string name="city_label_text">City:</string>
+    <string name="address_label_text">Address:</string>
+    <string name="postal_code_label_text">Postal code:</string>
+    <string name="phone_label_text">Phone:</string>
 </resources>

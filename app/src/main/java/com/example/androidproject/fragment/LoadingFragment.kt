@@ -22,7 +22,6 @@ import com.example.androidproject.api.ApiViewModelFactory
 import com.example.androidproject.api.model.Restaurant
 import com.example.androidproject.database.DbViewModel
 import com.example.androidproject.database.DbViewModelFactory
-import kotlinx.android.synthetic.main.fragment_profile.*
 
 class LoadingFragment : Fragment() {
 

@@ -18,7 +18,7 @@ class RestaurantAdapter(
 ) : RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
 
     interface OnItemClickListener{
-        fun onItemClick(position: Int)
+        fun onItemClick(item: Restaurant)
         fun onFavIconClick(item: Restaurant, favorite: Boolean)
     }
 
@@ -39,7 +39,7 @@ class RestaurantAdapter(
         val nameTextView: TextView = itemView.findViewById(R.id.rest_name)
         val addressTextView: TextView = itemView.findViewById(R.id.rest_address)
         val priceTextView: TextView = itemView.findViewById(R.id.rest_price)
-        val favImageView: ImageButton = itemView.findViewById(R.id.favorite_btn)
+        val favImageView: ImageView = itemView.findViewById(R.id.favorite_btn)
 
         init {
             itemView.setOnClickListener(this)
@@ -50,7 +50,7 @@ class RestaurantAdapter(
             val position: Int = adapterPosition
             if(position != RecyclerView.NO_POSITION){
                 if(v?.id == R.id.favorite_btn){
-                    val favIcon = v as ImageButton
+                    val favIcon = v as ImageView
                     val id = restaurants[position].id
                     if(userFavorites.contains(id)){
                         favIcon.setImageResource(android.R.drawable.btn_star_big_off)
@@ -65,7 +65,7 @@ class RestaurantAdapter(
                     Log.d("DEBUG", "Favorites: ${userFavorites.size}")
                 }
                 else {
-                    clickListener.onItemClick(position)
+                    clickListener.onItemClick(restaurants[position])
                 }
             }
         }
@@ -104,7 +104,6 @@ class RestaurantAdapter(
 
     fun addRestaurants(newList: List<Restaurant>){
         this.restaurants.addAll(newList)
-        //notifyDataSetChanged()
     }
 
     fun setUserFavorites(list: List<Long>){

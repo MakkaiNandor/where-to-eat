@@ -79,10 +79,16 @@ class ListFragment(
         return root
     }
 
-    override fun onItemClick(position: Int) {
-        Log.d("DEBUG", "Item $position clicked")
+    /**
+     * Show details about restaurant
+     */
+    override fun onItemClick(item: Restaurant) {
+        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_container_main, DetailFragment(item)).addToBackStack(null).commit()
     }
 
+    /**
+     * Add/remove restaurant to/from favorites
+     */
     override fun onFavIconClick(item: Restaurant, favorite: Boolean) {
         if(favorite){
             dbViewModel.addUserFavorite(item)
@@ -96,6 +102,7 @@ class ListFragment(
      * Load the next page's data, when bottom of list reached
      */
     override fun onBottomReached(position: Int) {
+        if(MainActivity.displayType == DisplayType.FAVORITES) return
         if(isNetworkAvailable()){
             if(MainActivity.currentPage < MainActivity.pages) {
                 // Loading next page's restaurants and add them to adapter
@@ -104,7 +111,7 @@ class ListFragment(
                 apiViewModel.getAllRestaurants(MainActivity.filters)
                 apiViewModel.restaurantsResponse.observe(viewLifecycleOwner, Observer { response ->
                     if (response.isSuccessful) {
-                        Log.d("DEBUG", "Restaurants successfully received")
+                        Log.d("DEBUG", "Restaurants from page ${MainActivity.currentPage} successfully received")
                         var restaurants: List<Restaurant> = if (response.body() == null) listOf() else response.body()!!.restaurants
                         var favorites: List<Restaurant> = dbViewModel.getUserFavorites()
                         if (MainActivity.displayType == DisplayType.FAVORITES) {
@@ -136,6 +143,9 @@ class ListFragment(
         }
     }
 
+    /**
+     * Check the internet connection
+     */
     private fun isNetworkAvailable() : Boolean {
         val manager =  requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){

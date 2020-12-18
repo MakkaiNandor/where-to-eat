@@ -37,9 +37,11 @@ class ProfileFragment : Fragment(), RestaurantAdapter.OnItemClickListener {
         // Display user's personal data
         setUpPersonalData(personalDataContainer)
 
+        // Edit or save the data
         personalDataContainer.findViewById<Button>(R.id.edit_button).setOnClickListener {
             val btn: Button = it as Button
             if(editMode){
+                // Change to default mode
                 if(savePersonalData(personalDataContainer)) {
                     if(MainActivity.loggedInUser != null){
                         dbViewModel.updateUser(MainActivity.loggedInUser!!)
@@ -50,6 +52,7 @@ class ProfileFragment : Fragment(), RestaurantAdapter.OnItemClickListener {
                 }
             }
             else{
+                // Change to edit mode
                 changeToEditMode(personalDataContainer)
                 btn.text = resources.getText(R.string.save_button_text)
                 editMode = !editMode
@@ -69,6 +72,9 @@ class ProfileFragment : Fragment(), RestaurantAdapter.OnItemClickListener {
         return root
     }
 
+    /**
+     * Show user's personal data
+     */
     private fun setUpPersonalData(parent: View){
         parent.findViewById<TextView>(R.id.name_value).text = MainActivity.loggedInUser?.name
         parent.findViewById<TextView>(R.id.email_value).text = MainActivity.loggedInUser?.email
@@ -76,6 +82,9 @@ class ProfileFragment : Fragment(), RestaurantAdapter.OnItemClickListener {
         parent.findViewById<TextView>(R.id.phone_value).text = MainActivity.loggedInUser?.phone
     }
 
+    /**
+     * Show editable text
+     */
     private fun changeToEditMode(parent: View){
         val nameText: TextView = parent.findViewById(R.id.name_value)
         val addressText: TextView = parent.findViewById(R.id.address_value)
@@ -94,6 +103,9 @@ class ProfileFragment : Fragment(), RestaurantAdapter.OnItemClickListener {
         phoneInput.visibility = View.VISIBLE
     }
 
+    /**
+     * Check validation of input values and save them
+     */
     private fun savePersonalData(parent: View): Boolean {
         val nameText: TextView = parent.findViewById(R.id.name_value)
         val addressText: TextView = parent.findViewById(R.id.address_value)
@@ -129,10 +141,16 @@ class ProfileFragment : Fragment(), RestaurantAdapter.OnItemClickListener {
         return true
     }
 
-    override fun onItemClick(position: Int) {
+    /**
+     * Show details about restaurant
+     */
+    override fun onItemClick(item: Restaurant) {
 
     }
 
+    /**
+     * Add/remove restaurant to/from favorites
+     */
     override fun onFavIconClick(item: Restaurant, favorite: Boolean) {
         if(favorite){
             dbViewModel.addUserFavorite(item)
