@@ -1,13 +1,11 @@
 package com.example.androidproject.fragment
 
-import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
@@ -40,15 +38,21 @@ class ProfileFragment : Fragment(), RestaurantAdapter.OnItemClickListener {
         setUpPersonalData(personalDataContainer)
 
         personalDataContainer.findViewById<Button>(R.id.edit_button).setOnClickListener {
-            editMode = !editMode
             val btn: Button = it as Button
             if(editMode){
-                btn.text = resources.getText(R.string.save_button_text)
-                toggleMode(personalDataContainer)
+                if(savePersonalData(personalDataContainer)) {
+                    if(MainActivity.loggedInUser != null){
+                        dbViewModel.updateUser(MainActivity.loggedInUser!!)
+                    }
+                    setUpPersonalData(personalDataContainer)
+                    btn.text = resources.getText(R.string.edit_button_text)
+                    editMode = !editMode
+                }
             }
             else{
-                btn.text = resources.getText(R.string.edit_button_text)
-                toggleMode(personalDataContainer)
+                changeToEditMode(personalDataContainer)
+                btn.text = resources.getText(R.string.save_button_text)
+                editMode = !editMode
             }
         }
 
@@ -72,39 +76,57 @@ class ProfileFragment : Fragment(), RestaurantAdapter.OnItemClickListener {
         parent.findViewById<TextView>(R.id.phone_value).text = MainActivity.loggedInUser?.phone
     }
 
-    private fun toggleMode(parent: View){
+    private fun changeToEditMode(parent: View){
         val nameText: TextView = parent.findViewById(R.id.name_value)
-        //val emailText: TextView = parent.findViewById(R.id.email_value)
         val addressText: TextView = parent.findViewById(R.id.address_value)
         val phoneText: TextView = parent.findViewById(R.id.phone_value)
         val nameInput: TextView = parent.findViewById(R.id.name_input)
-        //val emailInput: TextView = parent.findViewById(R.id.email_input)
         val addressInput: TextView = parent.findViewById(R.id.address_input)
         val phoneInput: TextView = parent.findViewById(R.id.phone_input)
-        if(editMode){
-            nameInput.text = nameText.text
-            //emailInput.text = emailText.text
-            addressInput.text = addressText.text
-            phoneInput.text = phoneText.text
-            nameText.visibility = View.GONE
-            //emailText.visibility = View.GONE
-            addressText.visibility = View.GONE
-            phoneText.visibility = View.GONE
-            nameInput.visibility = View.VISIBLE
-            //emailInput.visibility = View.VISIBLE
-            addressInput.visibility = View.VISIBLE
-            phoneInput.visibility = View.VISIBLE
+        nameInput.text = nameText.text
+        addressInput.text = addressText.text
+        phoneInput.text = phoneText.text
+        nameText.visibility = View.GONE
+        addressText.visibility = View.GONE
+        phoneText.visibility = View.GONE
+        nameInput.visibility = View.VISIBLE
+        addressInput.visibility = View.VISIBLE
+        phoneInput.visibility = View.VISIBLE
+    }
+
+    private fun savePersonalData(parent: View): Boolean {
+        val nameText: TextView = parent.findViewById(R.id.name_value)
+        val addressText: TextView = parent.findViewById(R.id.address_value)
+        val phoneText: TextView = parent.findViewById(R.id.phone_value)
+        val nameInput: TextView = parent.findViewById(R.id.name_input)
+        val addressInput: TextView = parent.findViewById(R.id.address_input)
+        val phoneInput: TextView = parent.findViewById(R.id.phone_input)
+        var error = false
+        if(nameInput.text.isBlank()){
+            nameInput.error = "Field is empty"
+            error = true
         }
-        else{
-            nameText.visibility = View.VISIBLE
-            //emailText.visibility = View.VISIBLE
-            addressText.visibility = View.VISIBLE
-            phoneText.visibility = View.VISIBLE
-            nameInput.visibility = View.GONE
-            //emailInput.visibility = View.GONE
-            addressInput.visibility = View.GONE
-            phoneInput.visibility = View.GONE
+        if(addressInput.text.isBlank()){
+            addressInput.error = "Field is empty"
+            error = true
         }
+        if(phoneInput.text.isBlank()){
+            phoneInput.error = "Field is empty"
+            error = true
+        }
+        if(error) return false
+        nameInput.visibility = View.GONE
+        addressInput.visibility = View.GONE
+        phoneInput.visibility = View.GONE
+        nameText.visibility = View.VISIBLE
+        addressText.visibility = View.VISIBLE
+        phoneText.visibility = View.VISIBLE
+        if(MainActivity.loggedInUser != null) {
+            MainActivity.loggedInUser!!.name = nameInput.text.toString().trim()
+            MainActivity.loggedInUser!!.address = addressInput.text.toString().trim()
+            MainActivity.loggedInUser!!.phone = phoneInput.text.toString().trim()
+        }
+        return true
     }
 
     override fun onItemClick(position: Int) {
