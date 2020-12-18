@@ -14,7 +14,7 @@ import com.example.androidproject.api.model.Restaurant
 
 class RestaurantAdapter(
     private val context: Context,
-    private val listener: OnItemClickListener
+    private val clickListener: OnItemClickListener
 ) : RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
 
     interface OnItemClickListener{
@@ -22,8 +22,17 @@ class RestaurantAdapter(
         fun onFavIconClick(item: Restaurant, favorite: Boolean)
     }
 
+    interface OnBottomReachedListener{
+        fun onBottomReached(position: Int)
+    }
+
     private var restaurants: MutableList<Restaurant> = mutableListOf()
     private var userFavorites: MutableList<Long> = mutableListOf()
+    private var scrollListener: OnBottomReachedListener? = null
+
+    fun setOnBottomReachedListener(listener: OnBottomReachedListener){
+        scrollListener = listener
+    }
 
     inner class RestaurantViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val restImageView: ImageView = itemView.findViewById(R.id.rest_img)
@@ -46,17 +55,17 @@ class RestaurantAdapter(
                     if(userFavorites.contains(id)){
                         favIcon.setImageResource(android.R.drawable.btn_star_big_off)
                         userFavorites.remove(id)
-                        listener.onFavIconClick(restaurants[position], false)
+                        clickListener.onFavIconClick(restaurants[position], false)
                     }
                     else{
                         favIcon.setImageResource(android.R.drawable.btn_star_big_on)
                         userFavorites.add(id)
-                        listener.onFavIconClick(restaurants[position], true)
+                        clickListener.onFavIconClick(restaurants[position], true)
                     }
                     Log.d("DEBUG", "Favorites: ${userFavorites.size}")
                 }
                 else {
-                    listener.onItemClick(position)
+                    clickListener.onItemClick(position)
                 }
             }
         }
@@ -81,6 +90,9 @@ class RestaurantAdapter(
         else {
             holder.favImageView.setImageResource(android.R.drawable.btn_star_big_off)
         }
+        if(position == restaurants.size - 1){
+            scrollListener?.onBottomReached(position)
+        }
     }
 
     override fun getItemCount(): Int = restaurants.size
@@ -92,7 +104,7 @@ class RestaurantAdapter(
 
     fun addRestaurants(newList: List<Restaurant>){
         this.restaurants.addAll(newList)
-        notifyDataSetChanged()
+        //notifyDataSetChanged()
     }
 
     fun setUserFavorites(list: List<Long>){

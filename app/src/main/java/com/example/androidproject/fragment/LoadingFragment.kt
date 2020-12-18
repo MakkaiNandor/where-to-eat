@@ -49,8 +49,11 @@ class LoadingFragment : Fragment() {
             apiViewModel.restaurantsResponse.observe(viewLifecycleOwner, Observer { response ->
                 if(response.isSuccessful){
                     Log.d("DEBUG", "Restaurants successfully received")
+                    MainActivity.totalEntries = response.body()?.total_entries ?: 0
+                    val perPage = response.body()?.per_page ?: 1
+                    MainActivity.pages = (MainActivity.totalEntries / perPage) + (if(MainActivity.totalEntries % perPage == 0) 0 else 1)
                     var restaurants: List<Restaurant> = if(response.body() == null) listOf() else response.body()!!.restaurants
-                    var favorites: List<Restaurant> = dbViewModel.getUserFavorites()
+                    val favorites: List<Restaurant> = dbViewModel.getUserFavorites()
                     if(MainActivity.displayType == DisplayType.FAVORITES) {
                         val filterName = MainActivity.filters["name"]
                         val filterCity = MainActivity.filters["city"]

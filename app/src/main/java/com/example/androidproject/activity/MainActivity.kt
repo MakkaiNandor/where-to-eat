@@ -23,6 +23,9 @@ class MainActivity : AppCompatActivity() {
         var filters: Map<String, String> = mapOf()
         var displayType: DisplayType = DisplayType.ALL
         var loggedInUser: User? = null
+        var currentPage: Int = 1
+        var pages: Int = 1
+        var totalEntries: Int = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +38,8 @@ class MainActivity : AppCompatActivity() {
         findViewById<BottomNavigationView>(R.id.bottom_nav).setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.list_item -> {
+                    currentPage = 1
+                    filters = filters.minus("page")
                     supportFragmentManager.beginTransaction().replace(R.id.fragment_container_main, LoadingFragment()).commit()
                     true
                 }

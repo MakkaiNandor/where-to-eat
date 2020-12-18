@@ -103,6 +103,8 @@ class FilterFragment : Fragment() {
                 MainActivity.filters = MainActivity.filters.plus("price" to selectedPrice)
             }
 
+            MainActivity.currentPage = 1
+            MainActivity.filters = MainActivity.filters.minus("page")
             requireActivity().supportFragmentManager.beginTransaction().replace(
                 R.id.fragment_container_main,
                 LoadingFragment()
@@ -111,6 +113,8 @@ class FilterFragment : Fragment() {
 
         // Click event listener for 'Back' button, this will redirect back to list fragment
         root.findViewById<Button>(R.id.back_button).setOnClickListener {
+            MainActivity.currentPage = 1
+            MainActivity.filters = MainActivity.filters.minus("page")
             requireActivity().supportFragmentManager.beginTransaction().replace(
                 R.id.fragment_container_main,
                 LoadingFragment()
