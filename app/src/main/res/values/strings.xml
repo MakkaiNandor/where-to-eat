@@ -20,6 +20,8 @@
     <string name="rest_price">Price</string>
     <!--  fragment_list  -->
     <string name="list_fragment_title">List of restaurants</string>
+    <string name="search_input_hint">Enter restaurant name here</string>
+    <string name="search_btn_text">Search</string>
     <!--  fragment_filter  -->
     <string name="filter_fragment_title">Filters</string>
     <string name="listed_data_text">Data to list</string>
@@ -36,9 +38,10 @@
     <string name="price_4">4</string>
     <string name="save_button_text">Save</string>
     <string name="back_button_text">Back</string>
-    <!--  bottom_nav_menu  -->
-    <string name="filter_title">Filter</string>
     <!--  list_menu  -->
+    <string name="search_title">Search</string>
+    <string name="filter_title">Filter</string>
+    <!--  bottom_nav_menu  -->
     <string name="list_title">List</string>
     <string name="profile_title">Profile</string>
     <!--  fragment_loading  -->

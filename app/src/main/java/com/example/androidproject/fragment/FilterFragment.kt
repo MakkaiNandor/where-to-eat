@@ -65,8 +65,8 @@ class FilterFragment : Fragment() {
         val prevSelectedPrice: Int = when(MainActivity.filters["price"]){
             "1" -> R.id.price_1
             "2" -> R.id.price_2
-            "3" -> R.id.price_2
-            "4" -> R.id.price_3
+            "3" -> R.id.price_3
+            "4" -> R.id.price_4
             else -> R.id.price_all
         }
         priceRadioGroup.check(prevSelectedPrice)

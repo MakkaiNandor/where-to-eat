@@ -22,10 +22,12 @@ import com.example.androidproject.api.ApiViewModelFactory
 import com.example.androidproject.api.model.Restaurant
 import com.example.androidproject.database.DbViewModel
 import com.example.androidproject.database.DbViewModelFactory
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 class LoadingFragment : Fragment() {
 
     private lateinit var apiViewModel: ApiViewModel
+    private lateinit var dbViewModel: DbViewModel
     private lateinit var errorMessageView: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -33,6 +35,7 @@ class LoadingFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_loading, container, false)
 
         apiViewModel = ViewModelProvider(this, ApiViewModelFactory(ApiRepository())).get(ApiViewModel::class.java)
+        dbViewModel = ViewModelProvider(this, DbViewModelFactory(requireActivity().application)).get(DbViewModel::class.java)
 
         // Error message view
         errorMessageView = root.findViewById(R.id.error)
@@ -46,11 +49,26 @@ class LoadingFragment : Fragment() {
             apiViewModel.restaurantsResponse.observe(viewLifecycleOwner, Observer { response ->
                 if(response.isSuccessful){
                     Log.d("DEBUG", "Restaurants successfully received")
-                    val restaurants: List<Restaurant> = if(response.body() == null) listOf() else response.body()!!.restaurants
+                    var restaurants: List<Restaurant> = if(response.body() == null) listOf() else response.body()!!.restaurants
+                    var favorites: List<Restaurant> = dbViewModel.getUserFavorites()
+                    if(MainActivity.displayType == DisplayType.FAVORITES) {
+                        val filterName = MainActivity.filters["name"]
+                        val filterCity = MainActivity.filters["city"]
+                        val filterPrice = MainActivity.filters["price"]
+                        var filteredFavorites: List<Restaurant> = favorites
+                        if(filterName != null) filteredFavorites = filteredFavorites.filter { it.name.contains(filterName, true) }
+                        if(filterCity != null) filteredFavorites = filteredFavorites.filter { it.city == filterCity }
+                        if(filterPrice != null) filteredFavorites = filteredFavorites.filter { it.price == filterPrice.toInt() }
+                        restaurants = filteredFavorites
+                    }
+                    else if(MainActivity.displayType == DisplayType.WITHOUT_FAVORITES){
+                        val favoritesId: List<Long> = favorites.map { it.id }
+                        restaurants = restaurants.filter { !favoritesId.contains(it.id) }
+                    }
                     // Go to List fragment
                     requireActivity().supportFragmentManager.beginTransaction().replace(
                         R.id.fragment_container_main,
-                        ListFragment(restaurants)
+                        ListFragment(restaurants, favorites)
                     ).commit()
                 }
                 else{
