@@ -2,8 +2,8 @@ package com.example.androidproject.database.entity
 
 import androidx.room.*
 
-@Entity(tableName = "user_favorite_table", primaryKeys = ["userId", "favoriteId"],
-    indices = [ Index(value = ["userId"]), Index(value = ["favoriteId"]) ],
+@Entity(tableName = "user_favorite_table", primaryKeys = ["userId", "restaurantId"],
+    indices = [ Index(value = ["userId"]), Index(value = ["restaurantId"]) ],
     foreignKeys = [
         ForeignKey(
                 entity = User::class,
@@ -12,15 +12,15 @@ import androidx.room.*
                 onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
-                entity = Favorite::class,
+                entity = Restaurant::class,
                 parentColumns = ["id"],
-                childColumns = ["favoriteId"],
+                childColumns = ["restaurantId"],
                 onDelete = ForeignKey.CASCADE
         )
     ]
 )
 data class UserFavorite(
         val userId: String,
-        val favoriteId: Long
+        val restaurantId: Long
 )
 

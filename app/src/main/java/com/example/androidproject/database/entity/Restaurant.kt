@@ -3,8 +3,8 @@ package com.example.androidproject.database.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "favorite_table")
-data class Favorite(
+@Entity(tableName = "restaurant_table")
+data class Restaurant(
         @PrimaryKey val id: Long,
         val name: String,
         val address: String,

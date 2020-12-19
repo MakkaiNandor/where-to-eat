@@ -1,14 +1,10 @@
 package com.example.androidproject.database
 
-import androidx.lifecycle.LiveData
-import com.example.androidproject.database.entity.Favorite
-import com.example.androidproject.database.entity.User
-import com.example.androidproject.database.entity.UserFavorite
+import com.example.androidproject.database.entity.*
 
 class DbRepository(private val dbDao: DbDao) {
 
-    val allUsers: List<User> = dbDao.allUsers()
-
+    // User
     fun getUser(email: String) = dbDao.getUser(email)
 
     fun checkUserForLogin(email: String, password: String) = dbDao.checkUserForLogin(email, password)
@@ -23,7 +19,8 @@ class DbRepository(private val dbDao: DbDao) {
         dbDao.updateUser(user)
     }
 
-    suspend fun addRestaurant(restaurant: Favorite){
+    // Restaurant
+    suspend fun addRestaurant(restaurant: Restaurant){
         dbDao.addRestaurant(restaurant)
     }
 
@@ -31,6 +28,7 @@ class DbRepository(private val dbDao: DbDao) {
         dbDao.deleteUnusedRestaurants()
     }
 
+    // User's favorites
     suspend fun addUserFavorite(userFavorite: UserFavorite){
         dbDao.addUserFavorite(userFavorite)
     }
@@ -40,5 +38,16 @@ class DbRepository(private val dbDao: DbDao) {
     }
 
     fun getUserFavorites(userEmail: String) = dbDao.getUserFavorites(userEmail)
+
+    // User's images per restaurant
+    suspend fun addImageToRestaurant(userImage: UserImage){
+        dbDao.addImageToRestaurant(userImage)
+    }
+
+    suspend fun removeImageFromRestaurant(userImage: UserImage){
+        dbDao.removeImageFromRestaurant(userImage)
+    }
+
+    fun getUserImagesByRestaurant(userEmail: String, restaurantId: Long) = dbDao.getUserImagesByRestaurant(userEmail, restaurantId)
 
 }
