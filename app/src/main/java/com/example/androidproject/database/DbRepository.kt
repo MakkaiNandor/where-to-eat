@@ -20,6 +20,8 @@ class DbRepository(private val dbDao: DbDao) {
     }
 
     // Restaurant
+    suspend fun checkRestaurant(id: Long) = dbDao.checkRestaurant(id)
+
     suspend fun addRestaurant(restaurant: Restaurant){
         dbDao.addRestaurant(restaurant)
     }
@@ -49,5 +51,9 @@ class DbRepository(private val dbDao: DbDao) {
     }
 
     fun getUserImagesByRestaurant(userEmail: String, restaurantId: Long) = dbDao.getUserImagesByRestaurant(userEmail, restaurantId)
+
+    suspend fun deleteAllUserImages() {
+        dbDao.deleteAllUserImages()
+    }
 
 }

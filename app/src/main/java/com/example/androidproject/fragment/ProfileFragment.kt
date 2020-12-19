@@ -7,12 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidproject.R
-import com.example.androidproject.RestaurantAdapter
+import com.example.androidproject.adapter.RestaurantAdapter
 import com.example.androidproject.activity.MainActivity
 import com.example.androidproject.api.model.Restaurant
 import com.example.androidproject.database.DbViewModel
@@ -65,7 +64,7 @@ class ProfileFragment : Fragment(), RestaurantAdapter.OnItemClickListener {
         adapter.setUserFavorites(userFavorites.map { it.id })
         favoriteList.adapter = adapter
         favoriteList.layoutManager = LinearLayoutManager(requireContext())
-        favoriteList.setHasFixedSize(true)
+        favoriteList.setHasFixedSize(false)
 
         return root
     }

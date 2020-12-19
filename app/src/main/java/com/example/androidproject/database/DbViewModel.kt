@@ -2,7 +2,9 @@ package com.example.androidproject.database
 
 import android.app.Application
 import androidx.lifecycle.*
+import androidx.recyclerview.widget.RecyclerView
 import com.example.androidproject.activity.MainActivity
+import com.example.androidproject.adapter.ImageAdapter
 import com.example.androidproject.database.entity.User
 import com.example.androidproject.database.entity.UserFavorite
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +45,9 @@ class DbViewModel(application: Application) : AndroidViewModel(application) {
     fun addUserFavorite(restaurant: Restaurant){
         viewModelScope.launch(Dispatchers.IO) {
             if(MainActivity.loggedInUser != null) {
-                repository.addRestaurant(restaurantToFavorite(restaurant))
+                if(repository.checkRestaurant(restaurant.id) == 0) {
+                    repository.addRestaurant(restaurantToFavorite(restaurant))
+                }
                 repository.addUserFavorite(UserFavorite(MainActivity.loggedInUser!!.email, restaurant.id))
             }
         }
@@ -71,17 +75,23 @@ class DbViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // User's images per restaurant
-    fun addImageToRestaurant(restaurantId: Long, image: ByteArray){
+    fun addImageToRestaurant(restaurant: Restaurant, image: ByteArray){
         viewModelScope.launch(Dispatchers.IO) {
             if(MainActivity.loggedInUser != null){
-                repository.addImageToRestaurant(UserImage(MainActivity.loggedInUser!!.email, restaurantId, image))
+                if(repository.checkRestaurant(restaurant.id) == 0) {
+                    repository.addRestaurant(restaurantToFavorite(restaurant))
+                }
+                repository.addImageToRestaurant(UserImage(MainActivity.loggedInUser!!.email, restaurant.id, image))
             }
         }
     }
 
-    fun removeImageFromRestaurant(userImage: UserImage){
+    fun removeImageFromRestaurant(restaurantId: Long, image: ByteArray){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.removeImageFromRestaurant(userImage)
+            if(MainActivity.loggedInUser != null) {
+                repository.removeImageFromRestaurant(UserImage(MainActivity.loggedInUser!!.email, restaurantId, image))
+                repository.deleteUnusedRestaurants()
+            }
         }
     }
 
@@ -90,6 +100,12 @@ class DbViewModel(application: Application) : AndroidViewModel(application) {
             return repository.getUserImagesByRestaurant(MainActivity.loggedInUser!!.email, restaurantId)
         }
         return listOf()
+    }
+
+    fun deleteAllUserImages() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllUserImages()
+        }
     }
 
     private fun restaurantToFavorite(restaurant: Restaurant): Favorite = Favorite(

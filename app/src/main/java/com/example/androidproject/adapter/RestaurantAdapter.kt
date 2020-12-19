@@ -1,15 +1,15 @@
-package com.example.androidproject
+package com.example.androidproject.adapter
 
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.androidproject.R
 import com.example.androidproject.api.model.Restaurant
 
 class RestaurantAdapter(
@@ -78,7 +78,12 @@ class RestaurantAdapter(
 
     override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
         val currentItem = restaurants[position]
-        //Glide.with(context).load(currentItem.image_url).into(holder.restImageView)
+//        Glide
+//            .with(context)
+//            .load(currentItem.image_url)
+//            .placeholder(R.drawable.logo)
+//            .thumbnail(0.1f)
+//            .into(holder.restImageView)
         holder.nameTextView.text = currentItem.name
         val addressText = "${currentItem.city}, ${currentItem.address}"
         holder.addressTextView.text = addressText

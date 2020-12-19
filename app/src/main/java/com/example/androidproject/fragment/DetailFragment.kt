@@ -18,6 +18,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.androidproject.adapter.ImageAdapter
 import com.example.androidproject.R
 import com.example.androidproject.api.model.Restaurant
 import com.example.androidproject.database.DbViewModel
@@ -27,7 +30,7 @@ import java.io.ByteArrayOutputStream
 class DetailFragment(
         private val restaurant: Restaurant,
         private var favorite: Boolean
-) : Fragment() {
+) : Fragment(), ImageAdapter.OnItemLongClickListener {
 
     companion object {
         private const val IMAGE_PICK_CODE = 1000
@@ -37,7 +40,8 @@ class DetailFragment(
     }
 
     private lateinit var dbViewModel: DbViewModel
-    private lateinit var image: ImageView
+    private lateinit var imageAdapter: ImageAdapter
+    private lateinit var imageList: RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -62,8 +66,6 @@ class DetailFragment(
             }
             favorite = !favorite
         }
-
-        image = root.findViewById(R.id.restaurant_image)
 
         // Pick image from external storage
         root.findViewById<ImageView>(R.id.gallery_btn).setOnClickListener {
@@ -97,6 +99,15 @@ class DetailFragment(
             }
         }
 
+        // Set up images
+        imageAdapter = ImageAdapter(requireContext(), dbViewModel.getUserImagesByRestaurant(restaurant.id).map {
+            BitmapFactory.decodeByteArray(it, 0, it.size)
+        } as MutableList<Bitmap>, this)
+        imageList = root.findViewById(R.id.image_list)
+        imageList.adapter = imageAdapter
+        imageList.layoutManager = GridLayoutManager(requireContext(), 2)
+        imageList.setHasFixedSize(false)
+
         return root
     }
 
@@ -127,18 +138,24 @@ class DetailFragment(
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK){
+            Log.d("DEBUG", "Image from gallery")
             val imgURI = data?.data ?: return
             val imgBitmap = BitmapFactory.decodeStream(requireActivity().contentResolver.openInputStream(imgURI))
-            image.setImageBitmap(imgBitmap)
+            imageAdapter.addImage(imgBitmap)
+            val imgStream = ByteArrayOutputStream()
+            imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, imgStream)
+            Log.d("DEBUG", imgStream.toByteArray().size.toString())
+            dbViewModel.addImageToRestaurant(restaurant, imgStream.toByteArray())
             Log.d("DEBUG", imgBitmap.toString())
         }
         else if(requestCode == CAMERA_CODE && resultCode == Activity.RESULT_OK){
+            Log.d("DEBUG", "Image from camera")
             val imgBitmap = data?.extras?.get("data") as Bitmap
-            image.setImageBitmap(imgBitmap)
+            imageAdapter.addImage(imgBitmap)
             val imgStream = ByteArrayOutputStream()
             imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, imgStream)
-            val result = imgStream.toByteArray()
-            Log.d("DEBUG", result.size.toString())
+            Log.d("DEBUG", imgStream.toByteArray().size.toString())
+            dbViewModel.addImageToRestaurant(restaurant, imgStream.toByteArray())
             Log.d("DEBUG", imgBitmap.toString())
         }
     }
@@ -153,6 +170,13 @@ class DetailFragment(
         parent.findViewById<TextView>(R.id.address_value).text = restaurant.address
         parent.findViewById<TextView>(R.id.postal_code_value).text = restaurant.postal_code
         parent.findViewById<TextView>(R.id.phone_value).text = restaurant.phone
+    }
+
+    override fun onItemLongClick(item: Bitmap) {
+        val imgStream = ByteArrayOutputStream()
+        item.compress(Bitmap.CompressFormat.PNG, 100, imgStream)
+        dbViewModel.removeImageFromRestaurant(restaurant.id, imgStream.toByteArray())
+        Toast.makeText(requireContext(), "Image deleted", Toast.LENGTH_SHORT).show()
     }
 
 }

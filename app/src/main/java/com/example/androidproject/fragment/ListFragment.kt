@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidproject.R
-import com.example.androidproject.RestaurantAdapter
+import com.example.androidproject.adapter.RestaurantAdapter
 import com.example.androidproject.activity.DisplayType
 import com.example.androidproject.activity.MainActivity
 import com.example.androidproject.api.ApiRepository

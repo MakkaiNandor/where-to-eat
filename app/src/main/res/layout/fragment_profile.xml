@@ -234,9 +234,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/favorites_list"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:scrollbars="vertical"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/favorites_title"
+                app:layout_constraintBottom_toBottomOf="parent"
                 tools:itemCount="10"
                 tools:layout_editor_absoluteX="40dp"
                 tools:listitem="@layout/item_layout" />

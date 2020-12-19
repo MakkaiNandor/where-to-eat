@@ -16,17 +16,20 @@ interface DbDao {
     @Query("SELECT count(*) FROM user_table WHERE email = :email")
     fun checkUserForRegister(email: String): Int
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addUser(user: User)
 
     @Update
     suspend fun updateUser(user: User)
 
     // Restaurant
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Query("SELECT count(*) FROM restaurant_table WHERE id = :id")
+    suspend fun checkRestaurant(id: Long): Int
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addRestaurant(restaurant: Restaurant)
 
-    @Query("DELETE FROM restaurant_table WHERE id NOT IN (SELECT DISTINCT restaurantId FROM user_favorite_table)")
+    @Query("DELETE FROM restaurant_table WHERE id NOT IN (SELECT DISTINCT restaurantId FROM user_favorite_table) AND  id NOT IN (SELECT DISTINCT restaurantId FROM user_image_table)")
     suspend fun deleteUnusedRestaurants()
 
     // User's favorites
@@ -48,5 +51,8 @@ interface DbDao {
 
     @Query("SELECT image FROM user_image_table WHERE userId = :userEmail AND restaurantId = :restaurantId")
     fun getUserImagesByRestaurant(userEmail: String, restaurantId: Long): List<ByteArray>
+
+    @Query("DELETE FROM user_image_table")
+    suspend fun deleteAllUserImages()
 
 }
