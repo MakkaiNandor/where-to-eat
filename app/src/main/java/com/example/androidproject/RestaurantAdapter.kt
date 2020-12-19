@@ -18,7 +18,7 @@ class RestaurantAdapter(
 ) : RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
 
     interface OnItemClickListener{
-        fun onItemClick(item: Restaurant)
+        fun onItemClick(item: Restaurant, favorite: Boolean)
         fun onFavIconClick(item: Restaurant, favorite: Boolean)
     }
 
@@ -49,9 +49,9 @@ class RestaurantAdapter(
         override fun onClick(v: View?) {
             val position: Int = adapterPosition
             if(position != RecyclerView.NO_POSITION){
+                val id = restaurants[position].id
                 if(v?.id == R.id.favorite_btn){
                     val favIcon = v as ImageView
-                    val id = restaurants[position].id
                     if(userFavorites.contains(id)){
                         favIcon.setImageResource(android.R.drawable.btn_star_big_off)
                         userFavorites.remove(id)
@@ -65,7 +65,7 @@ class RestaurantAdapter(
                     Log.d("DEBUG", "Favorites: ${userFavorites.size}")
                 }
                 else {
-                    clickListener.onItemClick(restaurants[position])
+                    clickListener.onItemClick(restaurants[position], userFavorites.contains(id))
                 }
             }
         }

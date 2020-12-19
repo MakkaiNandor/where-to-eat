@@ -32,28 +32,26 @@ class ProfileFragment : Fragment(), RestaurantAdapter.OnItemClickListener {
 
         dbViewModel = ViewModelProvider(this, DbViewModelFactory(requireActivity().application)).get(DbViewModel::class.java)
 
-        val personalDataContainer: ConstraintLayout = root.findViewById(R.id.personal_data_section)
-
         // Display user's personal data
-        setUpPersonalData(personalDataContainer)
+        setUpPersonalData(root)
 
         // Edit or save the data
-        personalDataContainer.findViewById<Button>(R.id.edit_button).setOnClickListener {
+        root.findViewById<Button>(R.id.edit_button).setOnClickListener {
             val btn: Button = it as Button
             if(editMode){
                 // Change to default mode
-                if(savePersonalData(personalDataContainer)) {
+                if(savePersonalData(root)) {
                     if(MainActivity.loggedInUser != null){
                         dbViewModel.updateUser(MainActivity.loggedInUser!!)
                     }
-                    setUpPersonalData(personalDataContainer)
+                    setUpPersonalData(root)
                     btn.text = resources.getText(R.string.edit_button_text)
                     editMode = !editMode
                 }
             }
             else{
                 // Change to edit mode
-                changeToEditMode(personalDataContainer)
+                changeToEditMode(root)
                 btn.text = resources.getText(R.string.save_button_text)
                 editMode = !editMode
             }
@@ -144,8 +142,8 @@ class ProfileFragment : Fragment(), RestaurantAdapter.OnItemClickListener {
     /**
      * Show details about restaurant
      */
-    override fun onItemClick(item: Restaurant) {
-
+    override fun onItemClick(item: Restaurant, favorite: Boolean) {
+        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_container_main, DetailFragment(item, favorite)).addToBackStack(null).commit()
     }
 
     /**
@@ -156,7 +154,7 @@ class ProfileFragment : Fragment(), RestaurantAdapter.OnItemClickListener {
             dbViewModel.addUserFavorite(item)
         }
         else{
-            dbViewModel.removeUserFavorite(item)
+            dbViewModel.removeUserFavorite(item.id)
         }
     }
 

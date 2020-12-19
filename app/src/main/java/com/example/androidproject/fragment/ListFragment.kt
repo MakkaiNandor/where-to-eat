@@ -82,8 +82,8 @@ class ListFragment(
     /**
      * Show details about restaurant
      */
-    override fun onItemClick(item: Restaurant) {
-        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_container_main, DetailFragment(item)).addToBackStack(null).commit()
+    override fun onItemClick(item: Restaurant, favorite: Boolean) {
+        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_container_main, DetailFragment(item, favorite)).addToBackStack(null).commit()
     }
 
     /**
@@ -94,7 +94,7 @@ class ListFragment(
             dbViewModel.addUserFavorite(item)
         }
         else{
-            dbViewModel.removeUserFavorite(item)
+            dbViewModel.removeUserFavorite(item.id)
         }
     }
 
@@ -130,7 +130,6 @@ class ListFragment(
                         restaurantList.post {
                             restaurantAdapter.notifyDataSetChanged()
                         }
-                        //restaurantAdapter.notifyDataSetChanged()
                     } else {
                         // Display error message
                         Toast.makeText(requireContext(), "Error ${response.code()}", Toast.LENGTH_LONG).show()
