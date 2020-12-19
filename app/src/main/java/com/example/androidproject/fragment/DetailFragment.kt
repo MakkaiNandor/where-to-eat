@@ -1,5 +1,6 @@
 package com.example.androidproject.fragment
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -27,6 +28,7 @@ import com.example.androidproject.R
 import com.example.androidproject.api.model.Restaurant
 import com.example.androidproject.database.DbViewModel
 import com.example.androidproject.database.DbViewModelFactory
+import kotlinx.coroutines.coroutineScope
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
 
@@ -36,17 +38,18 @@ class DetailFragment(
 ) : Fragment(), ImageAdapter.OnItemLongClickListener {
 
     companion object {
-        private const val IMAGE_PICK_CODE = 1000
-        private const val GALLERY_PERMISSION_CODE = 1001
-        private const val CAMERA_CODE = 2000
-        private const val CAMERA_PERMISSION_CODE = 2001
-        private const val PHONE_PERMISSION_CODE = 3001
+        private const val IMAGE_PICK_CODE = 1
+        private const val GALLERY_PERMISSION_CODE = 2
+        private const val CAMERA_CODE = 3
+        private const val CAMERA_PERMISSION_CODE = 4
+        private const val PHONE_PERMISSION_CODE = 5
     }
 
     private lateinit var dbViewModel: DbViewModel
     private lateinit var imageAdapter: ImageAdapter
     private lateinit var imageList: RecyclerView
 
+    @SuppressLint("QueryPermissionsNeeded")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_detail, container, false)
@@ -54,6 +57,21 @@ class DetailFragment(
         dbViewModel = ViewModelProvider(this, DbViewModelFactory(requireActivity().application)).get(DbViewModel::class.java)
 
         displayRestaurantData(root)
+
+        // Set up nested Google Maps
+        // requireActivity().supportFragmentManager.beginTransaction().replace(R.id.google_map_container, MapFragment(restaurant.lat, restaurant.lng)).commit()
+
+        // Show restaurant on Google Maps
+        root.findViewById<ImageView>(R.id.google_maps_btn).setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:${restaurant.lat},${restaurant.lng}"))
+            intent.setPackage("com.google.android.apps.maps")
+            if(intent.resolveActivity(requireActivity().packageManager) != null){
+                startActivity(intent)
+            }
+            else{
+                Toast.makeText(requireContext(), "You need Google Maps!", Toast.LENGTH_LONG).show()
+            }
+        }
 
         // Add/remove restaurant to/from favorites
         val favoriteBtn: ImageView = root.findViewById(R.id.favorite_btn)
@@ -138,7 +156,7 @@ class DetailFragment(
         imageList = root.findViewById(R.id.image_list)
         imageList.adapter = imageAdapter
         imageList.layoutManager = GridLayoutManager(requireContext(), 2)
-        imageList.setHasFixedSize(false)
+        imageList.setHasFixedSize(true)
 
         return root
     }

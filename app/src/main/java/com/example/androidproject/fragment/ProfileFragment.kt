@@ -64,7 +64,7 @@ class ProfileFragment : Fragment(), RestaurantAdapter.OnItemClickListener {
         adapter.setUserFavorites(userFavorites.map { it.id })
         favoriteList.adapter = adapter
         favoriteList.layoutManager = LinearLayoutManager(requireContext())
-        favoriteList.setHasFixedSize(false)
+        favoriteList.setHasFixedSize(true)
 
         return root
     }
