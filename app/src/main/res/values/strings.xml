@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Android Project</string>
+    <string name="app_name">Where to eat?</string>
     <!--  fragment_login  -->
     <string name="login_fragment_title">Login</string>
     <string name="email_input_hint">Email</string>

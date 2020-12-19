@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -26,6 +28,7 @@ import com.example.androidproject.api.model.Restaurant
 import com.example.androidproject.database.DbViewModel
 import com.example.androidproject.database.DbViewModelFactory
 import java.io.ByteArrayOutputStream
+import java.lang.Exception
 
 class DetailFragment(
         private val restaurant: Restaurant,
@@ -37,6 +40,7 @@ class DetailFragment(
         private const val GALLERY_PERMISSION_CODE = 1001
         private const val CAMERA_CODE = 2000
         private const val CAMERA_PERMISSION_CODE = 2001
+        private const val PHONE_PERMISSION_CODE = 3001
     }
 
     private lateinit var dbViewModel: DbViewModel
@@ -67,6 +71,26 @@ class DetailFragment(
             favorite = !favorite
         }
 
+        // Call the restaurant
+        root.findViewById<Button>(R.id.call_btn).setOnClickListener {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                if(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_DENIED){
+                    val permissions = arrayOf(android.Manifest.permission.CALL_PHONE)
+                    requestPermissions(permissions, PHONE_PERMISSION_CODE)
+                }
+                else{
+                    if(!callTheRestaurant()){
+                        Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            else{
+                if(!callTheRestaurant()){
+                    Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
         // Pick image from external storage
         root.findViewById<ImageView>(R.id.gallery_btn).setOnClickListener {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
@@ -75,11 +99,15 @@ class DetailFragment(
                     requestPermissions(permissions, GALLERY_PERMISSION_CODE)
                 }
                 else{
-                    pickImageFromGallery()
+                    if(!pickImageFromGallery()) {
+                        Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
             else{
-                pickImageFromGallery()
+                if(!pickImageFromGallery()){
+                    Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -91,11 +119,15 @@ class DetailFragment(
                     requestPermissions(permissions, CAMERA_PERMISSION_CODE)
                 }
                 else{
-                    createImageWithCamera()
+                    if(!createImageWithCamera()){
+                        Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
             else{
-                createImageWithCamera()
+                if(!createImageWithCamera()){
+                    Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -111,24 +143,46 @@ class DetailFragment(
         return root
     }
 
-    private fun pickImageFromGallery(){
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
+    private fun callTheRestaurant(): Boolean {
+        return try {
+            val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:${restaurant.phone}"))
+            startActivity(intent)
+            true
+        } catch (e: Exception){
+            e.printStackTrace()
+            false
+        }
     }
 
-    private fun createImageWithCamera(){
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, CAMERA_CODE)
+    private fun pickImageFromGallery(): Boolean {
+        return try {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, IMAGE_PICK_CODE)
+            true
+        } catch(e: Exception){
+            e.printStackTrace()
+            false
+        }
+    }
+
+    private fun createImageWithCamera(): Boolean {
+        return try {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(intent, CAMERA_CODE)
+            true
+        } catch (e: Exception){
+            e.printStackTrace()
+            false
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            if(requestCode == GALLERY_PERMISSION_CODE) {
-                pickImageFromGallery()
-            }
-            else if(requestCode == CAMERA_PERMISSION_CODE){
-                createImageWithCamera()
+            when(requestCode){
+                PHONE_PERMISSION_CODE -> if(!callTheRestaurant()) Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+                GALLERY_PERMISSION_CODE -> if(!pickImageFromGallery()) Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+                CAMERA_PERMISSION_CODE -> if(!createImageWithCamera()) Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
             }
         }
         else{
@@ -172,6 +226,9 @@ class DetailFragment(
         parent.findViewById<TextView>(R.id.phone_value).text = restaurant.phone
     }
 
+    /**
+     * Delete one image
+     */
     override fun onItemLongClick(item: Bitmap) {
         val imgStream = ByteArrayOutputStream()
         item.compress(Bitmap.CompressFormat.PNG, 100, imgStream)
