@@ -2,9 +2,7 @@ package com.example.androidproject.database
 
 import android.app.Application
 import androidx.lifecycle.*
-import androidx.recyclerview.widget.RecyclerView
 import com.example.androidproject.activity.MainActivity
-import com.example.androidproject.adapter.ImageAdapter
 import com.example.androidproject.database.entity.User
 import com.example.androidproject.database.entity.UserFavorite
 import kotlinx.coroutines.Dispatchers

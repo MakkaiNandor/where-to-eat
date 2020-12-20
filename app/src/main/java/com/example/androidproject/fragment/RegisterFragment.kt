@@ -61,11 +61,11 @@ class RegisterFragment : Fragment() {
                 )
                 dbViewModel.addUser(newUser)
                 MainActivity.loggedInUser = newUser
-                redirectToMainActivity(newUser.email)
+                redirectToMainActivity()
             }
             else{
                 val errMsg = "One user already exists with the same email address!"
-                errorMessageView.text = errMsg;
+                errorMessageView.text = errMsg
             }
         }
     }
@@ -140,7 +140,7 @@ class RegisterFragment : Fragment() {
     /**
      * Start the Main Activity.
      */
-    private fun redirectToMainActivity(email: String){
+    private fun redirectToMainActivity(){
         val intent = Intent(requireContext(), MainActivity::class.java)
         startActivity(intent)
         requireActivity().finish()

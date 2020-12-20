@@ -38,7 +38,7 @@ class ImageAdapter(
                     val item = images[position]
                     images.removeAt(position)
                     listener.onItemLongClick(item)
-                    notifyDataSetChanged()
+                    notifyItemRemoved(position)
                 }
                 alert.create().show()
             }

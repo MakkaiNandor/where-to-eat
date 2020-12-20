@@ -142,7 +142,7 @@ class ProfileFragment : Fragment(), RestaurantAdapter.OnItemClickListener {
      * Show details about restaurant
      */
     override fun onItemClick(item: Restaurant, favorite: Boolean) {
-        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_container_main, DetailFragment(item, favorite)).addToBackStack(null).commit()
+        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.fragment_container_main, DetailFragment(item, favorite)).commit()
     }
 
     /**

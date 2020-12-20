@@ -1,8 +1,6 @@
 package com.example.androidproject.api
 
 import com.example.androidproject.api.RetrofitInstance.api
-import com.example.androidproject.api.model.*
-import retrofit2.Response
 
 class ApiRepository {
 

@@ -3,12 +3,8 @@ package com.example.androidproject.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.lifecycle.ViewModelProvider
 import com.example.androidproject.fragment.LoadingFragment
 import com.example.androidproject.R
-import com.example.androidproject.api.model.Restaurant
-import com.example.androidproject.database.DbViewModel
-import com.example.androidproject.database.DbViewModelFactory
 import com.example.androidproject.database.entity.User
 import com.example.androidproject.fragment.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView

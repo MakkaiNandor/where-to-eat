@@ -55,7 +55,7 @@ class LoginFragment : Fragment() {
             val passVal = password.text.toString().trim()
             if (dbViewModel.checkUserForLogin(emailVal, passVal) > 0) {
                 MainActivity.loggedInUser = dbViewModel.getUser(emailVal)
-                redirectToMainActivity(emailVal)
+                redirectToMainActivity()
             } else {
                 val errMsg = "User doesn't exist!"
                 errorMessageView.text = errMsg
@@ -103,7 +103,7 @@ class LoginFragment : Fragment() {
     /**
      * Start the Main Activity.
      */
-    private fun redirectToMainActivity(email: String){
+    private fun redirectToMainActivity(){
         val intent = Intent(requireContext(), MainActivity::class.java)
         startActivity(intent)
         requireActivity().finish()

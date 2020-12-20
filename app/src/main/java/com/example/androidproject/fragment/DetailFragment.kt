@@ -28,9 +28,9 @@ import com.example.androidproject.R
 import com.example.androidproject.api.model.Restaurant
 import com.example.androidproject.database.DbViewModel
 import com.example.androidproject.database.DbViewModelFactory
-import kotlinx.coroutines.coroutineScope
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
+import kotlin.math.floor
 
 class DetailFragment(
         private val restaurant: Restaurant,
@@ -58,12 +58,11 @@ class DetailFragment(
 
         displayRestaurantData(root)
 
-        // Set up nested Google Maps
-        // requireActivity().supportFragmentManager.beginTransaction().replace(R.id.google_map_container, MapFragment(restaurant.lat, restaurant.lng)).commit()
-
         // Show restaurant on Google Maps
         root.findViewById<ImageView>(R.id.google_maps_btn).setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:${restaurant.lat},${restaurant.lng}"))
+            val geoParams = "geo:0,0?z=15&q=${restaurant.lat},${restaurant.lng}(${restaurant.name})"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(geoParams)
             intent.setPackage("com.google.android.apps.maps")
             if(intent.resolveActivity(requireActivity().packageManager) != null){
                 startActivity(intent)
@@ -156,14 +155,15 @@ class DetailFragment(
         imageList = root.findViewById(R.id.image_list)
         imageList.adapter = imageAdapter
         imageList.layoutManager = GridLayoutManager(requireContext(), 2)
-        imageList.setHasFixedSize(true)
+        imageList.setHasFixedSize(false)
 
         return root
     }
 
     private fun callTheRestaurant(): Boolean {
         return try {
-            val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:${restaurant.phone}"))
+            val intent = Intent(Intent.ACTION_CALL)
+            intent.data = Uri.parse("tel:${restaurant.phone}")
             startActivity(intent)
             true
         } catch (e: Exception){
@@ -212,24 +212,36 @@ class DetailFragment(
         if(requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK){
             Log.d("DEBUG", "Image from gallery")
             val imgURI = data?.data ?: return
-            val imgBitmap = BitmapFactory.decodeStream(requireActivity().contentResolver.openInputStream(imgURI))
-            imageAdapter.addImage(imgBitmap)
-            val imgStream = ByteArrayOutputStream()
-            imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, imgStream)
-            Log.d("DEBUG", imgStream.toByteArray().size.toString())
-            dbViewModel.addImageToRestaurant(restaurant, imgStream.toByteArray())
-            Log.d("DEBUG", imgBitmap.toString())
+            val image = BitmapFactory.decodeStream(requireActivity().contentResolver.openInputStream(imgURI))
+            addImageToRestaurant(image)
         }
         else if(requestCode == CAMERA_CODE && resultCode == Activity.RESULT_OK){
             Log.d("DEBUG", "Image from camera")
-            val imgBitmap = data?.extras?.get("data") as Bitmap
-            imageAdapter.addImage(imgBitmap)
-            val imgStream = ByteArrayOutputStream()
-            imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, imgStream)
-            Log.d("DEBUG", imgStream.toByteArray().size.toString())
-            dbViewModel.addImageToRestaurant(restaurant, imgStream.toByteArray())
-            Log.d("DEBUG", imgBitmap.toString())
+            val image: Bitmap = data?.getParcelableExtra("data") ?: return
+            addImageToRestaurant(image)
         }
+    }
+
+    private fun addImageToRestaurant(image: Bitmap){
+        var imgBitmap = image
+        Log.d("DEBUG", "w=${imgBitmap.width}, h=${imgBitmap.height}")
+        val ratio: Double = imgBitmap.width / imgBitmap.height.toDouble()
+        var newWidth = imgBitmap.width
+        var newHeight = imgBitmap.height
+        if(imgBitmap.width > 1080){
+            newWidth = 1080
+            newHeight = floor(newWidth / ratio).toInt()
+        }
+        else if(imgBitmap.height > 1080){
+            newHeight = 1080
+            newWidth = floor(newHeight * ratio).toInt()
+        }
+        imgBitmap = Bitmap.createScaledBitmap(imgBitmap, newWidth, newHeight, true)
+        Log.d("DEBUG", "w=${imgBitmap.width}, h=${imgBitmap.height}")
+        val imgStream = ByteArrayOutputStream()
+        imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, imgStream)
+        imageAdapter.addImage(imgBitmap)
+        dbViewModel.addImageToRestaurant(restaurant, imgStream.toByteArray())
     }
 
     private fun displayRestaurantData(parent: View){
@@ -249,7 +261,7 @@ class DetailFragment(
      */
     override fun onItemLongClick(item: Bitmap) {
         val imgStream = ByteArrayOutputStream()
-        item.compress(Bitmap.CompressFormat.PNG, 100, imgStream)
+        item.compress(Bitmap.CompressFormat.JPEG, 100, imgStream)
         dbViewModel.removeImageFromRestaurant(restaurant.id, imgStream.toByteArray())
         Toast.makeText(requireContext(), "Image deleted", Toast.LENGTH_SHORT).show()
     }
