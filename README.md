@@ -1,6 +1,6 @@
 # Where to eat?
 
-## A university project
+### A university project
 
 An Android application where the users can search for restaurants.
 
